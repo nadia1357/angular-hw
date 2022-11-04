@@ -2,7 +2,7 @@ export interface Board {
     name: string,
     date: Date,
     creationDate: string,
-    readonly description: string,
+    description: string,
     numberOfTasks: number
   }
 

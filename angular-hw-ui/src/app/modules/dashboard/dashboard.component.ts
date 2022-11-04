@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Board } from 'src/app/models/board';
-import { sortParams, orderParams } from 'src/app/models/paramArrays';
+import { sortParams, orderParams, selectParams } from 'src/app/models/paramArrays';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +12,15 @@ import { sortParams, orderParams } from 'src/app/models/paramArrays';
 export class DashboardComponent implements OnInit {
   public title = 'board';
   boards: Board[] = [];
+  selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
+  boardFilteredByName: Board | undefined = {
+    name: '',
+    date: new Date(),
+    creationDate: '',
+    description: '',
+    numberOfTasks: 0
+  };
+  name: string = '';
   sort: string = 'Date';
   order: string = 'ASC';
   currentOrder: string = 'ASC';
@@ -75,10 +84,15 @@ export class DashboardComponent implements OnInit {
     return boards;
   }
 
-  goToBoard(): void {}
+  goToBoard(): void { }
 
-  changeSort(newSort: string) {
-    this.sort = newSort;
+  changeSortingParams(selectedParams: selectParams) {
+    if (this.selectedParams.name) {
+      this.name = selectedParams.name;
+      this.boardFilteredByName = this.boards.find(item => item.name == this.name);
+    }
+
+    this.sort = selectedParams.sort;
     switch (this.sort) {
       case sortParams[0]:
         this.boards.sort();
@@ -90,10 +104,8 @@ export class DashboardComponent implements OnInit {
         this.boards.sort((a: any, b: any) => a.numberOfTasks - b.numberOfTasks);
         break;
     }
-  }
 
-  changeOrder(newOrder: string) {
-    this.order = newOrder;
+    this.order = selectedParams.order;
     if (this.order === orderParams[1] && this.currentOrder === 'ASC') {
       this.boards.reverse();
       this.currentOrder = 'DESC';
