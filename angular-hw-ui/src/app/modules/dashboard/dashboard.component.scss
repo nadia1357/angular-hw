@@ -1,0 +1,114 @@
+:host {
+    font-family: Arial;
+}
+
+h1 {
+    margin-left: 20px;
+}
+
+.upper {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: grey;
+}
+
+.boards {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    div.add-board {
+        width: 200px;
+        height: 200px;
+        margin: 20px;
+        position: relative;
+
+        button {
+            height: 200px;
+            width: 200px;
+            border-radius: 8px;
+            border: 2px solid grey;
+            background-color: lightgrey;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+
+            p.plus {
+                font-size: 2rem;
+                margin-bottom: 10px;
+                text-align: center;
+                color: grey;
+                margin-top: 20px;
+            }
+
+            p.text {
+                font-size: 1rem;
+                text-align: center;
+                color: grey;
+            }
+        }
+    }
+
+    div.board {
+        width: 220px;
+        margin: 20px;
+        padding: 10px;
+        background-color: lightgrey;
+        text-align: left;
+        color: grey;
+        border: 1px solid grey;
+
+        h2 {
+            margin: 10px auto 20px;
+        }
+
+        .board_btn {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            button {
+                margin: 10px 0;
+            }
+        }
+
+        .newName {
+            font-weight: bold;
+        }
+        
+        .btnSubmit {
+            margin-top: 10px;
+        }
+    }
+}
+
+.form {
+    width: 100%;
+    position: fixed;
+    top: 100px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+
+    form {
+        width: 250px;
+        height: 250px;
+        background-color: lightgreen;
+        padding: 20px 10px;
+        border: 2px solid darkgreen;
+        border-radius: 3px;
+        top: 200px;
+
+        input,
+        textarea {
+            margin-bottom: 20px;
+        }
+    }
+}

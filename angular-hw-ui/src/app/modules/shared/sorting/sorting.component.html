@@ -1,0 +1,21 @@
+    <div class="search sorting">
+        <label>Search {{title}}</label>
+        <input type="search" [(ngModel)]=itemName>
+        <div *ngFor="let item of items | filter: itemName">
+            {{item}}
+        </div>
+    </div>
+
+    <div class="form-group sorting">
+        <label>Sort by</label>
+        <select #newSort (change)="addNewSort(newSort.value)">
+            <option *ngFor="let sortParam of sortParams" [value]="sortParam">{{sortParam}}</option>
+        </select>
+    </div>
+
+    <div class="form-group sorting">
+        <label>Order by</label>
+        <select #newOrder (change)="addNewOrder(newOrder.value)">
+            <option *ngFor="let orderParam of orderParams" [value]="orderParam">{{orderParam}}</option>
+        </select>
+    </div>

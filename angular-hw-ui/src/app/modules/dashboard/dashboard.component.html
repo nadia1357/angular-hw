@@ -1,0 +1,54 @@
+<div class="upper">
+    <div>
+        <h1>Dashboard</h1>
+    </div>
+    <div>
+        <app-sorting (newSortEvent)="changeSort($event) (newOrderEvent)="changeOrder($event)></app-sorting>
+    </div>
+</div>
+<div class="boards">
+    <div class="add-board">
+        <button (click)="addNewBoard()">
+            <p class="plus">+</p>
+            <p class="text">Add new</p>
+        </button>
+    </div>
+
+    <div class='board' *ngFor="let board of boards">
+        <h3 [title]="board.name + ' details'">{{ board.name }}</h3>
+        <p *ngIf="board.description">Description: {{ board.description }}</p>
+        <p *ngIf="board.creationDate">Creation Date: {{ board.creationDate }}</p>
+
+        <div class="board_btn">
+            <button type="button" (click)="goToBoard()">Go To Board</button>
+            <button type="button" (click)="editBoard()">Edit</button>
+            <button type="button" (click)="deleteBoard(board, boards)">Delete</button>
+        </div>
+
+        <div *ngIf="editCurrentBoard" class="editModal">
+            <form *ngIf="editBoardForm" [formGroup]="editBoardForm" (ngSubmit)="onEdit(board)">
+                <div>
+                    <label class="newName" for="name">New board name</label>
+                    <input id="name" type="text" formControlName="name">
+                </div>
+                <button class="btnSubmit" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="createNewBoard" class="form">
+    <form *ngIf="addBoardForm" [formGroup]="addBoardForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="name">Board name</label>
+            <input id="name" type="text" formControlName="name">
+        </div>
+
+        <div>
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description"></textarea>
+        </div>
+
+        <button class="button" type="submit">Submit</button>
+    </form>
+</div>

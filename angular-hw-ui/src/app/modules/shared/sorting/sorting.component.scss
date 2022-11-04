@@ -1,0 +1,19 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: aquamarine;
+
+    div.sorting {
+        width: 30%;
+        padding: 10px;
+        color: black;
+        display: flex;
+        flex-direction: column;
+
+        label {
+            margin-bottom: 10px;
+        }
+    }
+
+}
