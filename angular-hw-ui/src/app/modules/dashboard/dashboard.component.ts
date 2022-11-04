@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Board } from 'src/app/models/board';
-import { sortParams, orderParams, sorts, orders } from 'src/app/models/paramArrays';
+import { sortParams, orderParams } from 'src/app/models/paramArrays';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,9 +12,9 @@ import { sortParams, orderParams, sorts, orders } from 'src/app/models/paramArra
 export class DashboardComponent implements OnInit {
   public title = 'board';
   boards: Board[] = [];
-  sort: sorts = 'Date';
-  order: orders = 'ASC';
-  currentOrder: orders = 'ASC';
+  sort: string = 'Date';
+  order: string = 'ASC';
+  currentOrder: string = 'ASC';
 
   createNewBoard: boolean = false;
   addBoardForm?: FormGroup;
@@ -75,11 +75,9 @@ export class DashboardComponent implements OnInit {
     return boards;
   }
 
-  goToBoard(): void {
+  goToBoard(): void {}
 
-  }
-
-  changeSort(newSort: sorts) {
+  changeSort(newSort: string) {
     this.sort = newSort;
     switch (this.sort) {
       case sortParams[0]:
@@ -94,7 +92,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  changeOrder(newOrder: orders) {
+  changeOrder(newOrder: string) {
     this.order = newOrder;
     if (this.order === orderParams[1] && this.currentOrder === 'ASC') {
       this.boards.reverse();
