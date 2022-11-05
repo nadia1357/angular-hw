@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Board } from 'src/app/models/board';
 import { sortParams, orderParams, selectParams } from 'src/app/models/paramArrays';
 
@@ -35,8 +36,13 @@ export class DashboardComponent implements OnInit {
   deleteBoardForm?: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder
-  ) { }
+    private formBuilder: FormBuilder,
+    public router: Router,
+  ) {
+    goToBoard(): void {
+      this.router.navigate(['/board']);
+    }
+  }
 
   ngOnInit(): void {
     this.addBoardForm = this.formBuilder.group({
@@ -92,14 +98,14 @@ export class DashboardComponent implements OnInit {
 
     this.sort = selectedParams.sort;
     switch (this.sort) {
-      case sortParams[0]: 
+      case sortParams[0]:
         this.boards.sort((a: any, b: any) => {
           let nameA = a.name.toLowerCase();
           let nameB = b.name.toLowerCase();
           if (nameA < nameB) return -1;
           if (nameA > nameB) return 1;
           return 0;
-        }) 
+        })
         break;
       case sortParams[1]:
         this.boards.sort((a: any, b: any) => +a.date - +b.date);

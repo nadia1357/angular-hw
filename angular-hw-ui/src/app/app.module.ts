@@ -25,6 +25,7 @@ const appRoutes = [
     DashboardModule,
     BoardModule,
   ],
+  exports: [RouterModule],
   providers: [],
   bootstrap: [AppComponent]
 })
