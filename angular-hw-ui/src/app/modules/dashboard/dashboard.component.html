@@ -20,7 +20,7 @@
         <p *ngIf="board.creationDate">Creation Date: {{ board.creationDate }}</p>
 
         <div class="board_btn">
-            <button type="button" (click)="goToBoard()">Go To Board</button>
+            <a routerLink="/board"><button type="button">Go To Board</button></a>
             <button type="button" (click)="editBoard()">Edit</button>
             <button type="button" (click)="deleteBoard(board, boards)">Delete</button>
         </div>

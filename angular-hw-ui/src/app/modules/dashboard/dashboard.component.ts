@@ -84,8 +84,6 @@ export class DashboardComponent implements OnInit {
     return boards;
   }
 
-  goToBoard(): void { }
-
   changeSortingParams(selectedParams: selectParams) {
     if (this.selectedParams.name) {
       this.name = selectedParams.name;
@@ -94,8 +92,14 @@ export class DashboardComponent implements OnInit {
 
     this.sort = selectedParams.sort;
     switch (this.sort) {
-      case sortParams[0]:
-        this.boards.sort();
+      case sortParams[0]: 
+        this.boards.sort((a: any, b: any) => {
+          let nameA = a.name.toLowerCase();
+          let nameB = b.name.toLowerCase();
+          if (nameA < nameB) return -1;
+          if (nameA > nameB) return 1;
+          return 0;
+        }) 
         break;
       case sortParams[1]:
         this.boards.sort((a: any, b: any) => +a.date - +b.date);
