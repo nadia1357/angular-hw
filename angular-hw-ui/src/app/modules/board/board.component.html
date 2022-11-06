@@ -1,1 +1,58 @@
-<p>board works!</p>
+<div class="upper">
+    <div>
+        <h1>Board</h1>
+    </div>
+    <div>
+        <!--<app-sorting (newEvent)="changeSortingParams($event)"></app-sorting>-->
+    </div>
+</div>
+
+<div>
+    <div class="todo">
+        <div class="add-task">
+            <button (click)="addNewTask()">
+                <p class="plus">+</p>
+            </button>
+        </div>
+
+        <div class='task' *ngFor="let task of tasks">
+            <div>
+                <h4 [title]="task.name + ' details'">{{ task.name }}</h4>
+            </div>
+            <div class="taskChange">
+                <button type="button" (click)="editTask()">Edit</button>
+                <button type="button" (click)="deleteTask(task, tasks)">Delete</button>
+            </div>
+
+            <div *ngIf="editCurrentTask" class="editModal">
+                <form *ngIf="editTaskForm" [formGroup]="editTaskForm" (ngSubmit)="onEdit(task)">
+                    <div>
+                        <label class="newName" for="name">New task name</label>
+                        <input id="name" type="text" formControlName="name">
+                    </div>
+                    <button class="btnSubmit" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="createNewTask" class="form">
+        <form *ngIf="addTaskForm" [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
+            <div>
+                <label for="name">Task name</label>
+                <input id="name" type="text" formControlName="name">
+            </div>
+            <button class="button" type="submit">Submit</button>
+        </form>
+    </div>
+
+</div>
+
+<div class="inProgress">
+
+</div>
+
+<div class="done">
+
+</div>
+</div>

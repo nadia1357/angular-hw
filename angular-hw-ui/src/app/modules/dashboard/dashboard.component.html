@@ -18,9 +18,10 @@
         <h3 [title]="board.name + ' details'">{{ board.name }}</h3>
         <p *ngIf="board.description">Description: {{ board.description }}</p>
         <p *ngIf="board.creationDate">Creation Date: {{ board.creationDate }}</p>
+        <p *ngIf="board.numberOfTasks">Number of Tasks: {{ board.numberOfTasks }}</p>
 
         <div class="board_btn">
-            <button type="button" (click)="goToBoard()">Go To Board</button>
+            <button type="button" routerLink="/board">Go To Board</button>
             <button type="button" (click)="editBoard()">Edit</button>
             <button type="button" (click)="deleteBoard(board, boards)">Delete</button>
         </div>

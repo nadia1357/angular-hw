@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Board } from 'src/app/models/board';
 import { sortParams, orderParams, selectParams } from 'src/app/models/paramArrays';
 
@@ -36,13 +35,8 @@ export class DashboardComponent implements OnInit {
   deleteBoardForm?: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder,
-    public router: Router,
-  ) {
-    goToBoard(): void {
-      this.router.navigate(['/board']);
-    }
-  }
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     this.addBoardForm = this.formBuilder.group({
@@ -65,6 +59,7 @@ export class DashboardComponent implements OnInit {
     let newBoard: Board = this.addBoardForm?.value;
     newBoard.date = new Date();
     newBoard.creationDate = formatDate(newBoard.date, 'dd/MM/yyyy', 'en');
+    newBoard.numberOfTasks = 0;
     this.boards.push(newBoard);
     this.addBoardForm?.reset();
     this.createNewBoard = false;
@@ -94,6 +89,10 @@ export class DashboardComponent implements OnInit {
     if (this.selectedParams.name) {
       this.name = selectedParams.name;
       this.boardFilteredByName = this.boards.find(item => item.name == this.name);
+      if (this.boardFilteredByName !== undefined) {
+        this.boards = [];
+        this.boards.push(this.boardFilteredByName);
+      }
     }
 
     this.sort = selectedParams.sort;
@@ -121,6 +120,11 @@ export class DashboardComponent implements OnInit {
       this.currentOrder = 'DESC';
     } else if (this.order === orderParams[0] && this.currentOrder === 'DESC') {
       this.boards.reverse();
+      this.currentOrder = 'ASC';
+    } else if (this.order === orderParams[1] && this.currentOrder === 'DESC') {
+      this.currentOrder = 'DESC';
+    }
+    else if (this.order === orderParams[0] && this.currentOrder === 'ASC') {
       this.currentOrder = 'ASC';
     }
   }
