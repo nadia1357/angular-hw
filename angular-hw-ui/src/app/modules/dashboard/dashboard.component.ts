@@ -36,11 +36,13 @@ export class DashboardComponent implements OnInit {
   deleteBoardForm?: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private BoardsService: BoardsService
+    private BoardsService: BoardsService,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
+    this.BoardsService.getBoards().subscribe({next: (data: any) => this.boards = data["boardsList"]});
+
     this.addBoardForm = this.formBuilder.group({
       name: ['', [
         Validators.required,
@@ -55,8 +57,6 @@ export class DashboardComponent implements OnInit {
         Validators.minLength(3)
       ]]
     });
-
-    this.BoardsService.getBoards().subscribe({next: (data: any) => this.boards = data["boardList"]});
   }
 
   onSubmit(): void {
