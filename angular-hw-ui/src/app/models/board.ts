@@ -1,9 +1,8 @@
 export interface Board {
     name: string,
-    date: Date,
+    created_at: Date,
     creationDate: string,
     description: string,
     numberOfTasks: number
   }
-
   

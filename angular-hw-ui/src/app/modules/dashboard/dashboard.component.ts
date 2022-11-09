@@ -3,6 +3,7 @@ import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Board } from 'src/app/models/board';
 import { sortParams, orderParams, selectParams } from 'src/app/models/paramArrays';
+import { BoardsService } from 'src/app/core/services/dasboard-service/boards.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,7 @@ export class DashboardComponent implements OnInit {
   selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
   boardFilteredByName: Board | undefined = {
     name: '',
-    date: new Date(),
+    created_at: new Date(),
     creationDate: '',
     description: '',
     numberOfTasks: 0
@@ -35,7 +36,8 @@ export class DashboardComponent implements OnInit {
   deleteBoardForm?: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private BoardsService: BoardsService
   ) { }
 
   ngOnInit(): void {
@@ -53,12 +55,14 @@ export class DashboardComponent implements OnInit {
         Validators.minLength(3)
       ]]
     });
+
+    this.BoardsService.getBoards().subscribe({next: (data: any) => this.boards = data["boardList"]});
   }
 
   onSubmit(): void {
     let newBoard: Board = this.addBoardForm?.value;
-    newBoard.date = new Date();
-    newBoard.creationDate = formatDate(newBoard.date, 'dd/MM/yyyy', 'en');
+    newBoard.created_at = new Date();
+    newBoard.creationDate = formatDate(newBoard.created_at, 'dd/MM/yyyy', 'en');
     newBoard.numberOfTasks = 0;
     this.boards.push(newBoard);
     this.addBoardForm?.reset();

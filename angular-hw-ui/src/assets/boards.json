@@ -1,0 +1,24 @@
+{ 
+    "boardsList":
+    [{
+        "name": "aa",
+        "created_at": "new Date()",
+        "creationDate": "may2022",
+        "description": "aa",
+        "numberOfTasks": 5
+    }, {
+        "name": "bb",
+        "created_at": "new Date()",
+        "creationDate": "april2022",
+        "description": "bb",
+        "numberOfTasks": 2
+    }, {
+        "name": "dd",
+        "created_at": "new Date()",
+        "creationDate": "january2022",
+        "description": "dd",
+        "numberOfTasks": 2
+    }
+]
+}
+

@@ -7,21 +7,44 @@
     </div>
 </div>
 
-<div>
+<div class="allTasks">
     <div class="todo">
-        <div class="add-task">
-            <button (click)="addNewTask()">
-                <p class="plus">+</p>
-            </button>
+        <div class="columnName">
+            <h2>To Do</h2>
         </div>
 
-        <div class='task' *ngFor="let task of tasks">
-            <div>
-                <h4 [title]="task.name + ' details'">{{ task.name }}</h4>
+        <!--<div class="columnBlock">
+            <div class="form-group columnColors">
+                <label>Choose color</label>
+                <select #newColor (change)="addNewColor(newColor.value)">
+                    <option *ngFor="let color of colors" [value]="color">{{color}}</option>
+                </select>
             </div>
-            <div class="taskChange">
-                <button type="button" (click)="editTask()">Edit</button>
-                <button type="button" (click)="deleteTask(task, tasks)">Delete</button>
+
+            <div class="add-task taskItem">
+                <button (click)="addNewTask()">
+                    <p class="plus">+</p>
+                </button>
+            </div>
+
+            <div *ngIf="createNewTask" class="form taskItem">
+                <form *ngIf="addTaskForm" [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
+                    <div>
+                        <label for="name">Task name</label>
+                        <input id="name" type="text" formControlName="name">
+                    </div>
+                    <button class="button" type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div class='task taskItem' *ngFor="let task of tasks">
+                <h4 [title]="task.name + ' details'">{{ task.name }}</h4>
+                <div class="taskIcons">
+                    <fa-icon [icon]="faPenToSquare"></fa-icon>
+                    <fa-icon [icon]="faComment"></fa-icon>
+                    <fa-icon [icon]="faTrashCan"></fa-icon>
+                    <fa-icon [icon]="faBoxArchive"></fa-icon>
+                </div>
             </div>
 
             <div *ngIf="editCurrentTask" class="editModal">
@@ -33,20 +56,19 @@
                     <button class="btnSubmit" type="submit">Submit</button>
                 </form>
             </div>
+
+            <div *ngIf="addNewComment" class="commentModal">
+                <form *ngIf="addNewCommentForm" [formGroup]="addCommentForm" (ngSubmit)="onAddComment(task)">
+                    <div>
+                        <label class="newName" for="name">New comment</label>
+                        <input id="name" type="text" formControlName="name">
+                    </div>
+                    <button class="btnSubmit" type="submit">Submit</button>
+                </form>
+            </div>
         </div>
     </div>
-
-    <div *ngIf="createNewTask" class="form">
-        <form *ngIf="addTaskForm" [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
-            <div>
-                <label for="name">Task name</label>
-                <input id="name" type="text" formControlName="name">
-            </div>
-            <button class="button" type="submit">Submit</button>
-        </form>
-    </div>
-
-</div>
+</div>-->
 
 <div class="inProgress">
 
@@ -54,5 +76,4 @@
 
 <div class="done">
 
-</div>
 </div>

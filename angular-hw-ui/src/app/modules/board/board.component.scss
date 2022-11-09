@@ -1,0 +1,54 @@
+:host {
+    font-family: Arial;
+}
+
+h1 {
+    margin-left: 20px;
+}
+
+div.allTasks {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 90%;
+
+    div.todo {
+        width: 30%;
+        
+        div.columnName {
+            background-color: lightgrey;
+            h2 {
+                text-align: center;
+            }
+        }
+
+        div.columnBlock {
+            display: flex; 
+            flex-direction: column;
+            justify-content: space-around;
+            
+            div.columnColors {
+                width: 250px;
+                margin: 10px auto;
+            }
+
+            .taskItem {
+                width: 250px;
+                margin: 10px auto;
+            }
+            div.task {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                div.taskIcons {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+                }
+            }
+        }
+
+    }
+}
