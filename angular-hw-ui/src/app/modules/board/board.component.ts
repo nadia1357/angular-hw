@@ -12,7 +12,7 @@ import { sortParams, orderParams, selectParams, colors } from 'src/app/models/pa
 export class BoardComponent implements OnInit {
   
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+  
   }
   faTrashCan = faTrashCan;
   faComment = faComment;
