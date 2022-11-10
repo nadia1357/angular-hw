@@ -19,7 +19,8 @@ export class DashboardComponent implements OnInit {
     created_at: new Date(),
     creationDate: '',
     description: '',
-    numberOfTasks: 0
+    numberOfTasks: 0,
+    boardId: ''
   };
   name: string = '';
   sort: string = 'Date';
@@ -35,13 +36,15 @@ export class DashboardComponent implements OnInit {
   deleteCurrentBoard: boolean = false;
   deleteBoardForm?: FormGroup;
 
+  boardsKey: string = 'boards';
+
   constructor(
     private BoardsService: BoardsService,
     private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
-    this.BoardsService.getBoards().subscribe({next: (data: any) => this.boards = data["boardsList"]});
+    this.BoardsService.getBoards(this.boardsKey);
 
     this.addBoardForm = this.formBuilder.group({
       name: ['', [
@@ -64,7 +67,8 @@ export class DashboardComponent implements OnInit {
     newBoard.created_at = new Date();
     newBoard.creationDate = formatDate(newBoard.created_at, 'dd/MM/yyyy', 'en');
     newBoard.numberOfTasks = 0;
-    this.boards.push(newBoard);
+    newBoard.boardId = newBoard.name; // must be changed later to real ID when using MongoDB
+    this.BoardsService.addNewBoard(this.boardsKey, newBoard);
     this.addBoardForm?.reset();
     this.createNewBoard = false;
   }
@@ -84,9 +88,7 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteBoard(board: { name: any; }, boards: any): any {
-    let deleteIndex = boards.findIndex((item: any) => item.name == board.name);
-    boards.splice(deleteIndex, 1);
-    return boards;
+    this.BoardsService.deleteBoard(this.boardsKey, board)
   }
 
   changeSortingParams(selectedParams: selectParams) {

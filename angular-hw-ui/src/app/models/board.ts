@@ -3,6 +3,7 @@ export interface Board {
     created_at: Date,
     creationDate: string,
     description: string,
-    numberOfTasks: number
+    numberOfTasks: number,
+    boardId: any
   }
   
