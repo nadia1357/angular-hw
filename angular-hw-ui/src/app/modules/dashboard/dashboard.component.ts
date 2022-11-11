@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Board } from 'src/app/models/board';
 import { sortParams, orderParams, selectParams } from 'src/app/models/paramArrays';
 import { BoardsService } from 'src/app/core/services/dasboard-service/boards.service';
+import { SortingService } from 'src/app/core/services/sorting-service/sorting.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -87,7 +88,7 @@ export class DashboardComponent implements OnInit {
     this.editCurrentBoard = true;
   }
 
-  deleteBoard(board: { name: any; }, boards: any): any {
+  deleteBoard(board: { name: any; }): any {
     this.BoardsService.deleteBoard(this.boardsKey, board)
   }
 

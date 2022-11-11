@@ -3,7 +3,7 @@
         <h1>Dashboard</h1>
     </div>
     <div>
-        <app-sorting (newEvent)="changeSortingParams($event)"></app-sorting>
+        <app-sorting (newSortingEvent)="changeSortingParams($event)"></app-sorting>
     </div>
 </div>
 <div class="boards">
@@ -23,7 +23,7 @@
         <div class="board_btn">
             <button type="button" routerLink="/board">Go To Board</button>
             <button type="button" (click)="editBoard()">Edit</button>
-            <button type="button" (click)="deleteBoard(board, boards)">Delete</button>
+            <button type="button" (click)="deleteBoard(board)">Delete</button>
         </div>
 
         <div *ngIf="editCurrentBoard" class="editModal">
