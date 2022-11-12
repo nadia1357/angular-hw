@@ -177,9 +177,9 @@ const getUserLoadShippingInfoById = async (req, res, next) => {
 }
 
 module.exports = {
-  getUserLoads,
+  getBoards,
   addUserLoad,
-  getUserActiveLoad,
+  getBoardById,
   iterateLoadState,
   getUserLoadById,
   updateUserLoadById,

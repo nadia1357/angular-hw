@@ -1,6 +1,7 @@
 export interface Board {
     name: string,
-    boardId: any,
+    boardId: string,
+    created_by: string,
     created_at: Date,
     creationDate: string,
     description: string,

@@ -17,7 +17,7 @@ export class BoardsService {
     if (boardsFromLocalStorage) {
       this.boards = JSON.parse(boardsFromLocalStorage);
     } else this.boards = [];
-    return this.boards;
+    return of(this.boards);
   }
 
   getBoardByName(boardsKey: string, boardName: string) {
@@ -38,7 +38,7 @@ export class BoardsService {
     } else this.boards = [];
     this.boards.push(board);
     localStorage.setItem(boardsKey, JSON.stringify(this.boards));
-    return this.boards;
+    return of(this.boards);
   }
 
   editBoardName(boardsKey: string, boardId: any, newBoardName: string) {
@@ -53,7 +53,7 @@ export class BoardsService {
       }
     }
     localStorage.setItem(boardsKey, JSON.stringify(this.boards));
-    return this.boards;
+    return of(this.boards);
   }
 
   deleteBoard(boardsKey: string, board: { name: any; }): any {
@@ -64,7 +64,7 @@ export class BoardsService {
     let deleteIndex = this.boards.findIndex((item: any) => item.name == board.name);
     this.boards.splice(deleteIndex, 1);
     localStorage.setItem(boardsKey, JSON.stringify(this.boards));
-    return this.boards;
+    return of(this.boards);
   }
 
   updateNumberOfTasks(boardsKey: string, boardId: any, newNumberOfTasks: number) {

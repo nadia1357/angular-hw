@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Board } from 'src/app/models/board';
 import { sortParams, orderParams, selectParams } from 'src/app/models/paramArrays';
 import { BoardsService } from 'src/app/core/services/dasboard-service/boards.service';
-import { SortingService } from 'src/app/core/services/sorting-service/sorting.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,7 +20,8 @@ export class DashboardComponent implements OnInit {
     creationDate: '',
     description: '',
     numberOfTasks: 0,
-    boardId: ''
+    boardId: '', 
+    created_by: ''
   };
   name: string = '';
   sort: string = 'Date';
@@ -70,6 +70,8 @@ export class DashboardComponent implements OnInit {
     newBoard.numberOfTasks = 0;
     newBoard.boardId = newBoard.name; // must be changed later to real ID when using MongoDB
     this.BoardsService.addNewBoard(this.boardsKey, newBoard);
+    let allBoards: any = localStorage.getItem('boards');
+    this.boards = JSON.parse(allBoards);
     this.addBoardForm?.reset();
     this.createNewBoard = false;
   }
@@ -80,6 +82,8 @@ export class DashboardComponent implements OnInit {
 
   onEdit(board: { name: any; }): void {
     board.name = this.editBoardForm?.value.name;
+    let allBoards: any = localStorage.getItem('boards');
+    this.boards = JSON.parse(allBoards);
     this.editBoardForm?.reset();
     this.editCurrentBoard = false;
   }
@@ -89,7 +93,9 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteBoard(board: { name: any; }): any {
-    this.BoardsService.deleteBoard(this.boardsKey, board)
+    this.BoardsService.deleteBoard(this.boardsKey, board);
+    let allBoards: any = localStorage.getItem('boards');
+    this.boards = JSON.parse(allBoards);
   }
 
   changeSortingParams(selectedParams: selectParams) {

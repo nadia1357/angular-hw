@@ -10,7 +10,7 @@ router.post('/boards', addNewBoard);
 router.get('/boards/:id', getBoardById);
 router.put('/boards/:id', editBoardName);
 router.delete('/boards/:id', deleteBoard);
-router.put('/boards/:id/post', updateNumberOfTasks);
+router.patch('/boards/:id', updateNumberOfTasks);
 
 module.exports = {
   boardsRouter: router
