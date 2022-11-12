@@ -13,16 +13,8 @@ import { BoardsService } from 'src/app/core/services/dasboard-service/boards.ser
 export class DashboardComponent implements OnInit {
   public title = 'board';
   boards: Board[] = [];
+  searchedBoardName: string = '';
   selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
-  boardFilteredByName: Board | undefined = {
-    name: '',
-    created_at: new Date(),
-    creationDate: '',
-    description: '',
-    numberOfTasks: 0,
-    boardId: '', 
-    created_by: ''
-  };
   name: string = '';
   sort: string = 'Date';
   order: string = 'ASC';
@@ -45,7 +37,10 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.BoardsService.getBoards(this.boardsKey);
+    let allBoards: any = localStorage.getItem(this.boardsKey);
+    if (allBoards) {
+      this.boards = JSON.parse(allBoards);
+    } else this.boards = [];
 
     this.addBoardForm = this.formBuilder.group({
       name: ['', [
@@ -80,9 +75,11 @@ export class DashboardComponent implements OnInit {
     this.createNewBoard = true;
   }
 
-  onEdit(board: { name: any; }): void {
-    board.name = this.editBoardForm?.value.name;
-    let allBoards: any = localStorage.getItem('boards');
+  onEdit(board: any): void {
+    let oldBoardName = board.name;
+    let newBoardName = this.editBoardForm?.value.name;
+    this.BoardsService.editBoardName(this.boardsKey, oldBoardName, newBoardName);
+    let allBoards: any = localStorage.getItem(this.boardsKey);
     this.boards = JSON.parse(allBoards);
     this.editBoardForm?.reset();
     this.editCurrentBoard = false;
@@ -92,20 +89,23 @@ export class DashboardComponent implements OnInit {
     this.editCurrentBoard = true;
   }
 
-  deleteBoard(board: { name: any; }): any {
+  deleteBoard(board: any): void {
     this.BoardsService.deleteBoard(this.boardsKey, board);
-    let allBoards: any = localStorage.getItem('boards');
+    let allBoards: any = localStorage.getItem(this.boardsKey);
     this.boards = JSON.parse(allBoards);
   }
 
   changeSortingParams(selectedParams: selectParams) {
-    if (this.selectedParams.name) {
+    /*if (this.selectedParams.name) {
       this.name = selectedParams.name;
       this.boardFilteredByName = this.boards.find(item => item.name == this.name);
       if (this.boardFilteredByName !== undefined) {
         this.boards = [];
         this.boards.push(this.boardFilteredByName);
       }
+    }*/
+    if (this.selectedParams.name) {
+
     }
 
     this.sort = selectedParams.sort;

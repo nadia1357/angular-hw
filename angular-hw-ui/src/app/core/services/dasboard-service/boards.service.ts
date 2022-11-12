@@ -28,7 +28,6 @@ export class BoardsService {
     let board: any = this.boards.find((item: any) => item.name === boardName);
     this.boards = [];
     this.boards.push(board);
-    return this.boards;
   }
 
   addNewBoard(boardsKey: string, board: any) {
@@ -38,22 +37,19 @@ export class BoardsService {
     } else this.boards = [];
     this.boards.push(board);
     localStorage.setItem(boardsKey, JSON.stringify(this.boards));
-    return of(this.boards);
   }
 
-  editBoardName(boardsKey: string, boardId: any, newBoardName: string) {
+  editBoardName(boardsKey: string, oldBoardName: string, newBoardName: string) {
     let boardsFromLocalStorage = localStorage.getItem(boardsKey);
     if (boardsFromLocalStorage) {
       this.boards = JSON.parse(boardsFromLocalStorage);
     } else this.boards = [];
-    let board: any;
-    for (board in this.boards) {
-      if (board.boardId === boardId) {
-        board.name = newBoardName;
+    this.boards.forEach((board, index) => {
+      if (board.name === oldBoardName) {
+        this.boards[index].name = newBoardName;
       }
-    }
+    });
     localStorage.setItem(boardsKey, JSON.stringify(this.boards));
-    return of(this.boards);
   }
 
   deleteBoard(boardsKey: string, board: { name: any; }): any {
@@ -64,7 +60,6 @@ export class BoardsService {
     let deleteIndex = this.boards.findIndex((item: any) => item.name == board.name);
     this.boards.splice(deleteIndex, 1);
     localStorage.setItem(boardsKey, JSON.stringify(this.boards));
-    return of(this.boards);
   }
 
   updateNumberOfTasks(boardsKey: string, boardId: any, newNumberOfTasks: number) {
@@ -79,6 +74,5 @@ export class BoardsService {
       }
     }
     localStorage.setItem(boardsKey, JSON.stringify(this.boards));
-    return this.boards;
   }
 }

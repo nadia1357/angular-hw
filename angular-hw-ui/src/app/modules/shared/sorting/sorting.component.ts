@@ -8,6 +8,7 @@ import { sortParams, orderParams, selectParams } from 'src/app/models/paramArray
 })
 
 export class SortingComponent implements OnInit {
+  searchText: string ='';
   sortParams = sortParams;
   orderParams = orderParams;
   selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
@@ -17,7 +18,7 @@ export class SortingComponent implements OnInit {
   @Output() newSortingEvent = new EventEmitter<selectParams>();
 
   addNewParam(value: string, paramType: string) {
-    switch(paramType) {
+    switch (paramType) {
       case ('name'): {
         this.selectedParams.name = value;
         this.newSortingEvent.emit(this.selectedParams);
@@ -28,12 +29,12 @@ export class SortingComponent implements OnInit {
         this.newSortingEvent.emit(this.selectedParams);
         break;
       }
-      case('order'): {
+      case ('order'): {
         this.selectedParams.order = value;
         this.newSortingEvent.emit(this.selectedParams);
         break;
       }
-    }  
+    }
   }
 
   ngOnInit(): void { }

@@ -14,7 +14,7 @@
         </button>
     </div>
 
-    <div class='board' *ngFor="let board of boards">
+    <div class='board' *ngFor="let board of (boards | search: searchedBoardName)">
         <h3 [title]="board.name + ' details'">{{ board.name }}</h3>
         <p *ngIf="board.description">Description: {{ board.description }}</p>
         <p *ngIf="board.creationDate">Creation Date: {{ board.creationDate }}</p>
