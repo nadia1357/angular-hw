@@ -11,16 +11,16 @@
     <div class="todo">
         <div class="columnName">
             <h2>To Do</h2>
+            <div class="colors">
+                <p>Choose column color</p>
+                <span class="dot red-violet-crayola" (click)="changeColumnColor()"></span>
+                <span class="dot pastel-pink" (click)="changeColumnColor()"></span>
+                <span class="dot dutch-white" (click)="changeColumnColor()"></span>
+                <span class="dot wild-orchid" (click)="changeColumnColor()"></span>
+            </div>
         </div>
 
         <div class="columnBlock">
-            <div class="form-group columnColors">
-                <label>Choose color</label>
-                <select #newColor (change)="addNewColor(newColor.value)">
-                    <option *ngFor="let color of colors" [value]="color">{{color}}</option>
-                </select>
-            </div>
-
             <div class="add-task taskItem">
                 <button (click)="addNewTask()">
                     <p class="plus">+</p>
@@ -40,10 +40,10 @@
             <div class='task taskItem' *ngFor="let task of tasks">
                 <h4 [title]="task.name + ' details'">{{ task.name }}</h4>
                 <div class="taskIcons">
-                    <fa-icon [icon]="faPenToSquare"></fa-icon>
-                    <fa-icon [icon]="faComment"></fa-icon>
-                    <fa-icon [icon]="faTrashCan"></fa-icon>
-                    <fa-icon [icon]="faBoxArchive"></fa-icon>
+                    <fa-icon [icon]="faPenToSquare" (click)="editTask()"></fa-icon>
+                    <fa-icon [icon]="faComment" (click)="addComment()"></fa-icon>
+                    <fa-icon [icon]="faTrashCan" (click)="deleteTask()"></fa-icon>
+                    <fa-icon [icon]="faBoxArchive" (click)="archiveTask()"></fa-icon>
                 </div>
             </div>
 

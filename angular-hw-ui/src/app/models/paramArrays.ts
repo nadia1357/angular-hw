@@ -8,7 +8,10 @@ export interface selectParams {
 };
 
 export const colors = [
-    {name: '', color: ''},
-    {name: '', color: ''},
-    {name: '', color: ''}
+    {name: 'Red Violet Crayola', color: 'AF4D98'},
+    {name: 'Wild Orchid', color: 'D66BA0'},
+    {name: 'Pastel Pink', color: 'E5A9A9'},
+    {name: 'Dutch White', color: 'F4E4BA'},
+    {name: 'Magic Mint', color: '9DF7E5'},
+    {name: 'Light Gray', color: 'D3D3D3'}
 ];

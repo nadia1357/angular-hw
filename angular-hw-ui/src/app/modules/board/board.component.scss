@@ -15,19 +15,48 @@ div.allTasks {
 
     div.todo {
         width: 30%;
-        
+
         div.columnName {
             background-color: lightgrey;
+
             h2 {
                 text-align: center;
+            }
+
+            .colors {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                .dot {
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 50%;
+                }
+
+                .red-violet-crayola {
+                    background-color: #af4d98;
+                }
+
+                .pastel-pink {
+                    background-color: #e5a9a9;
+                }
+
+                .dutch-white {
+                    background-color: #f4e4ba;
+                }
+
+                .wild-orchid {
+                    background-color: #d66ba0;
+                }
             }
         }
 
         div.columnBlock {
-            display: flex; 
+            display: flex;
             flex-direction: column;
             justify-content: space-around;
-            
+
             div.columnColors {
                 width: 250px;
                 margin: 10px auto;
@@ -37,6 +66,7 @@ div.allTasks {
                 width: 250px;
                 margin: 10px auto;
             }
+
             div.task {
                 display: flex;
                 flex-direction: row;

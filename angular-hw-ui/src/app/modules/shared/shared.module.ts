@@ -5,7 +5,7 @@ import { SortingComponent } from './sorting/sorting.component';
 
 @NgModule({
   declarations: [
-    SortingComponent
+    SortingComponent, 
   ],
   imports: [
     CommonModule, FormsModule

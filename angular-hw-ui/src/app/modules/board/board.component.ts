@@ -36,12 +36,19 @@ export class BoardComponent implements OnInit{
   deleteCurrentTask: boolean = false;
   deleteTaskForm?: FormGroup;
 
+  tasksKey: string = 'tasks';
+
   constructor(
     private TasksService: TasksService,
     private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
+    let allTasks: any = localStorage.getItem(this.tasksKey);
+    if (allTasks) {
+      this.tasks = JSON.parse(allTasks);
+    } else this.tasks = [];
+
     this.addTaskForm = this.formBuilder.group({
       name: ['', [
         Validators.required,
@@ -55,6 +62,10 @@ export class BoardComponent implements OnInit{
         Validators.minLength(3)
       ]]
     });
+  }
+
+  changeColumnColor() {
+
   }
 
   onSubmit(): void {
@@ -79,14 +90,14 @@ export class BoardComponent implements OnInit{
     this.editCurrentTask = true;
   }
 
-  deleteTask(board: { name: any; }, tasks: any): any {
+  deleteTask(task: { name: any; }, tasks: any): any {
     let deleteIndex = tasks.findIndex((item: any) => item.name == tasks.name);
     tasks.splice(deleteIndex, 1);
     return tasks;
   }
 
   changeSortingParams(selectedParams: selectParams) {
-    
+    this.searchedTaskName = selectedParams.name;
 
     this.sort = selectedParams.sort;
     switch (this.sort) {
