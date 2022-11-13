@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit {
     this.createNewBoard = true;
   }
 
-  onEdit(board: any): void {
+  onEdit(board: { name: any; }): void {
     let oldBoardName = board.name;
     let newBoardName = this.editBoardForm?.value.name;
     this.BoardsService.editBoardName(this.boardsKey, oldBoardName, newBoardName);
@@ -89,24 +89,14 @@ export class DashboardComponent implements OnInit {
     this.editCurrentBoard = true;
   }
 
-  deleteBoard(board: any): void {
+  deleteBoard(board: { name: any; }): void {
     this.BoardsService.deleteBoard(this.boardsKey, board);
     let allBoards: any = localStorage.getItem(this.boardsKey);
     this.boards = JSON.parse(allBoards);
   }
 
   changeSortingParams(selectedParams: selectParams) {
-    /*if (this.selectedParams.name) {
-      this.name = selectedParams.name;
-      this.boardFilteredByName = this.boards.find(item => item.name == this.name);
-      if (this.boardFilteredByName !== undefined) {
-        this.boards = [];
-        this.boards.push(this.boardFilteredByName);
-      }
-    }*/
-    if (this.selectedParams.name) {
-
-    }
+    this.searchedBoardName = selectedParams.name;
 
     this.sort = selectedParams.sort;
     switch (this.sort) {

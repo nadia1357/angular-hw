@@ -3,33 +3,25 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashCan, faComment, faPenToSquare, faBoxArchive } from '@fortawesome/free-solid-svg-icons';
 import { Task } from 'src/app/models/task';
 import { sortParams, orderParams, selectParams, colors } from 'src/app/models/paramArrays';
+import { TasksService } from 'src/app/core/services/board-service/tasks.service';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
-export class BoardComponent implements OnInit {
-  
-  ngOnInit(): void {
-  
-  }
+export class BoardComponent implements OnInit{
   faTrashCan = faTrashCan;
   faComment = faComment;
   faPenToSquare = faPenToSquare;
   faBoxArchive = faBoxArchive;
 
-  /*public title = 'task';
+  public title = 'task';
   tasks: Task[] = [];
   colors = colors;
+  searchedTaskName: string = '';
   selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
-  taskFilteredByName: Task | undefined = {
-    name: '',
-    created_at: new Date(),
-    boardId: '', 
-    status: '',
-    comments: []
-  };
+  
   name: string = '';
   sort: string = 'Date';
   order: string = 'ASC';
@@ -45,6 +37,7 @@ export class BoardComponent implements OnInit {
   deleteTaskForm?: FormGroup;
 
   constructor(
+    private TasksService: TasksService,
     private formBuilder: FormBuilder
   ) { }
 
@@ -93,14 +86,7 @@ export class BoardComponent implements OnInit {
   }
 
   changeSortingParams(selectedParams: selectParams) {
-    if (this.selectedParams.name) {
-      this.name = selectedParams.name;
-      this.taskFilteredByName = this.tasks.find(item => item.name == this.name);
-      if (this.taskFilteredByName !== undefined) {
-        this.tasks = [];
-        this.tasks.push(this.taskFilteredByName);
-      }
-    }
+    
 
     this.sort = selectedParams.sort;
     switch (this.sort) {
@@ -134,5 +120,5 @@ export class BoardComponent implements OnInit {
     else if (this.order === orderParams[0] && this.currentOrder === 'ASC') {
       this.currentOrder = 'ASC';
     }
-  }*/
+  }
 }

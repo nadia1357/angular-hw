@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { sortParams, orderParams, selectParams } from 'src/app/models/paramArrays';
 
 @Component({
@@ -7,14 +7,13 @@ import { sortParams, orderParams, selectParams } from 'src/app/models/paramArray
   styleUrls: ['./sorting.component.scss']
 })
 
-export class SortingComponent implements OnInit {
-  searchText: string ='';
+export class SortingComponent {
+  public title: string = 'board';
   sortParams = sortParams;
   orderParams = orderParams;
   selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
   paramType: string = '';
 
-  @Input() title: string = '';
   @Output() newSortingEvent = new EventEmitter<selectParams>();
 
   addNewParam(value: string, paramType: string) {
@@ -36,6 +35,4 @@ export class SortingComponent implements OnInit {
       }
     }
   }
-
-  ngOnInit(): void { }
 }
