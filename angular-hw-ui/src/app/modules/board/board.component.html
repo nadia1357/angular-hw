@@ -1,0 +1,190 @@
+<div class="upper">
+    <div>
+        <h1>Board</h1>
+    </div>
+    <div>
+        <app-sorting (newSortingEvent)="changeSortingParams($event)"></app-sorting>
+    </div>
+</div>
+
+<div class="allTasks">
+    <div class="todo">
+        <div class="columnName">
+            <h2>To Do</h2>
+            <div class="colors">
+                <p>Choose column color</p>
+                <span class="dot red-violet-crayola" (click)="changeColumnColor(0, 'todo')"></span>
+                <span class="dot pastel-pink" (click)="changeColumnColor(1, 'todo')"></span>
+                <span class="dot magic-mint" (click)="changeColumnColor(2, 'todo')"></span>
+                <span class="dot wild-orchid" (click)="changeColumnColor(3, 'todo')"></span>
+            </div>
+        </div>
+
+        <div class="columnBlock item-List" cdkDropList #todoList="cdkDropList" [cdkDropListData]="todoTasks" [cdkDropListConnectedTo]="[inProgressList, doneList]"
+         (cdkDropListDropped)="drop($event)" [ngClass]="getColorValue('todo') || todoCurrentColor">
+            <div class="add-task taskItem">
+                <button class="addTaskBtn" (click)="addNewTask('todo')">
+                    <p class="plus">+</p>
+                </button>
+            </div>
+
+            <div *ngIf="createNewTaskToDo" class="taskItem">
+                <form class="form" *ngIf="addTaskForm" [formGroup]="addTaskForm" (ngSubmit)="onSubmit('todo')">
+                    <input id="name" type="text" formControlName="name" placeholder="Task name">
+                    <button class="addTaskSubmitBtn" type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div *ngIf="editCurrentTaskToDo" class="taskItem">
+                <form class="form" *ngIf="editTaskForm" [formGroup]="editTaskForm" (ngSubmit)="onEdit()">
+                    <input id="name" type="text" formControlName="name" placeholder="New task name">
+                    <button class="btnSubmit" type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div class="taskItem task item-box" *ngFor="let todoTask of (todoTasks | searchTask: searchedTaskName)" cdkDrag>
+                <h4>{{ todoTask.name }}</h4>
+                <div class="taskIcons">
+                    <fa-icon [icon]="faPenToSquare" (click)="editTask(todoTask, 'todo')"></fa-icon>
+                    <fa-icon [icon]="faComment" [routerLink]="['/task', todoTask.id]"></fa-icon>
+                    <fa-icon [icon]="faTrashCan" (click)="deleteTask(todoTask)"></fa-icon>
+                    <fa-icon [icon]="faBoxArchive" (click)="archiveTask(todoTask)"></fa-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="inProgress">
+        <div class="columnName">
+            <h2>In Progress</h2>
+            <div class="colors">
+                <p>Choose column color</p>
+                <span class="dot red-violet-crayola" (click)="changeColumnColor(0, 'inProgress')"></span>
+                <span class="dot pastel-pink" (click)="changeColumnColor(1, 'inProgress')"></span>
+                <span class="dot magic-mint" (click)="changeColumnColor(2, 'inProgress')"></span>
+                <span class="dot wild-orchid" (click)="changeColumnColor(3, 'inProgress')"></span>
+            </div>
+        </div>
+
+        <div class="columnBlock item-list" cdkDropList #inProgressList="cdkDropList" [cdkDropListData]="inProgressTasks" [cdkDropListConnectedTo]="[todoList, doneList]"
+         (cdkDropListDropped)="drop($event)"[ngClass]="getColorValue('inProgress') || inProgressCurrentColor">
+            <div class="add-task taskItem">
+                <button class="addTaskBtn" (click)="addNewTask('inProgress')">
+                    <p class="plus">+</p>
+                </button>
+            </div>
+
+            <div *ngIf="createNewTaskInProgress" class="taskItem">
+                <form class="form" *ngIf="addTaskForm" [formGroup]="addTaskForm"
+                    (ngSubmit)="onSubmit('inProgress')">
+                    <input id="name" type="text" formControlName="name" placeholder="Task name">
+                    <button class="addTaskSubmitBtn" type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div *ngIf="editCurrentTaskInProgress" class="taskItem">
+                <form class="form" *ngIf="editTaskForm" [formGroup]="editTaskForm" (ngSubmit)="onEdit()">
+                    <input id="name" type="text" formControlName="name" placeholder="New task name">
+                    <button class="btnSubmit" type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div class="taskItem task item-box" *ngFor="let inProgressTask of (inProgressTasks | searchTask: searchedTaskName)" cdkDrag>
+                <h4>{{ inProgressTask.name }}</h4>
+                <div class="taskIcons">
+                    <fa-icon [icon]="faPenToSquare" (click)="editTask(inProgressTask, 'inProgress')"></fa-icon>
+                    <fa-icon [icon]="faComment" [routerLink]="['/task', inProgressTask.id]"></fa-icon>
+                    <fa-icon [icon]="faTrashCan" (click)="deleteTask(inProgressTask)"></fa-icon>
+                    <fa-icon [icon]="faBoxArchive" (click)="archiveTask(inProgressTask)"></fa-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="done">
+        <div class="columnName">
+            <h2>Done</h2>
+            <div class="colors">
+                <p>Choose column color</p>
+                <span class="dot red-violet-crayola" (click)="changeColumnColor(0, 'done')"></span>
+                <span class="dot pastel-pink" (click)="changeColumnColor(1, 'done')"></span>
+                <span class="dot magic-mint" (click)="changeColumnColor(2, 'done')"></span>
+                <span class="dot wild-orchid" (click)="changeColumnColor(3, 'done')"></span>
+            </div>
+        </div>
+
+        <div class="columnBlock item-list" cdkDropList #doneList="cdkDropList" [cdkDropListData]="doneTasks" [cdkDropListConnectedTo]="[todoList, inProgressList]"
+         (cdkDropListDropped)="drop($event)" [ngClass]="getColorValue('done') || doneCurrentColor">
+            <div class="add-task taskItem">
+                <button class="addTaskBtn" (click)="addNewTask('done')">
+                    <p class="plus">+</p>
+                </button>
+            </div>
+
+            <div *ngIf="createNewTaskDone" class="taskItem">
+                <form class="form" *ngIf="addTaskForm" [formGroup]="addTaskForm" (ngSubmit)="onSubmit('done')">
+                    <input id="name" type="text" formControlName="name" placeholder="Task name">
+                    <button class="addTaskSubmitBtn" type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div *ngIf="editCurrentTaskDone" class="taskItem">
+                <form class="form" *ngIf="editTaskForm" [formGroup]="editTaskForm" (ngSubmit)="onEdit()">
+                    <input id="name" type="text" formControlName="name" placeholder="New task name">
+                    <button class="btnSubmit" type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div class="taskItem task item-box" *ngFor="let doneTask of (doneTasks | searchTask: searchedTaskName)" cdkDrag>
+                <h4>{{ doneTask.name }}</h4>
+                <div class="taskIcons">
+                    <fa-icon [icon]="faPenToSquare" (click)="editTask(doneTask, 'done')"></fa-icon>
+                    <fa-icon [icon]="faComment" [routerLink]="['/task', doneTask.id]"></fa-icon>
+                    <fa-icon [icon]="faTrashCan" (click)="deleteTask(doneTask)"></fa-icon>
+                    <fa-icon [icon]="faBoxArchive" (click)="archiveTask(doneTask)"></fa-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="archived" *ngIf="showArchivedTasks">
+        <div class="columnName">
+            <h2>Archived</h2>
+            <div class="colors">
+                <p>Choose column color</p>
+                <span class="dot red-violet-crayola" (click)="changeColumnColor(0, 'archived')"></span>
+                <span class="dot pastel-pink" (click)="changeColumnColor(1, 'archived')"></span>
+                <span class="dot magic-mint" (click)="changeColumnColor(2, 'archived')"></span>
+                <span class="dot wild-orchid" (click)="changeColumnColor(3, 'archived')"></span>
+            </div>
+        </div>
+
+        <div class="columnBlock" [ngClass]="getColorValue('archived') || archivedCurrentColor">
+            <div class="add-task taskItem">
+                <button class="addTaskBtn" (click)="addNewTask('archived')">
+                    <p class="plus">+</p>
+                </button>
+            </div>
+
+            <div *ngIf="editCurrentTaskArchived" class="taskItem">
+                <form class="form" *ngIf="editTaskForm" [formGroup]="editTaskForm" (ngSubmit)="onEdit()">
+                    <input id="name" type="text" formControlName="name" placeholder="New task name">
+                    <button class="btnSubmit" type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div class="taskItem task" *ngFor="let archivedTask of (archivedTasks | searchTask: searchedTaskName)">
+                <h4>{{ archivedTask.name }}</h4>
+                <div class="taskIcons">
+                    <fa-icon [icon]="faPenToSquare" (click)="editTask(archivedTask, 'archived')"></fa-icon>
+                    <fa-icon [icon]="faComment" [routerLink]="['/task', archivedTask.id]"></fa-icon>
+                    <fa-icon [icon]="faTrashCan" (click)="deleteTask(archivedTask)"></fa-icon>
+                </div>
+            </div>
+
+            <div class="taskItem">
+                <button class="hideArchivedTasksBtn" (click)="hideArchivedTasks()">Hide archived tasks</button>
+            </div>
+        </div>
+    </div>
+</div>

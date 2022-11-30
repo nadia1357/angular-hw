@@ -1,0 +1,18 @@
+    <div class="search form-group sorting">
+        <label>Search name</label>
+        <input type="text" #newItemName (change)="addNewParam(newItemName.value, 'name')" placeholder="Search">
+    </div>
+
+    <div class="form-group sorting">
+        <label>Sort by</label>
+        <select #newSort (change)="addNewParam(newSort.value, 'sort')">
+            <option *ngFor="let sortParam of sortParams" [value]="sortParam">{{sortParam}}</option>
+        </select>
+    </div>
+
+    <div class="form-group sorting">
+        <label>Order by</label>
+        <select #newOrder (change)="addNewParam(newOrder.value, 'order')">
+            <option *ngFor="let orderParam of orderParams" [value]="orderParam">{{orderParam}}</option>
+        </select>
+    </div>

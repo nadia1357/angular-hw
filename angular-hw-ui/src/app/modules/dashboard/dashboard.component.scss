@@ -1,0 +1,112 @@
+:host {
+    font-family: Arial;
+}
+
+h1 {
+    margin-left: 20px;
+}
+
+.upper {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: grey;
+}
+
+.boards {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+
+    div.add-board {
+        width: 200px;
+        height: 200px;
+        margin: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space around;
+        align-items: center;
+
+        button {
+            height: 200px;
+            width: 200px;
+            border-radius: 8px;
+            border: 2px solid grey;
+            background-color: #af4d98;
+
+            p.plus {
+                font-size: 2rem;
+                margin-bottom: 10px;
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            p.text {
+                font-size: 1rem;
+                text-align: center;
+            }
+        }
+    }
+
+    div.board {
+        width: 220px;
+        margin: 20px;
+        padding: 10px;
+        background-color: #d66ba0;
+        text-align: left;
+        border: 1px solid grey;
+
+        h2 {
+            margin: 10px auto 20px;
+        }
+
+        .board_btn {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            button {
+                margin: 10px 0;
+            }
+        }
+
+        .newName {
+            font-weight: bold;
+        }
+        
+        .btnSubmit {
+            margin-top: 10px;
+        }
+    }
+}
+
+.form {
+    width: 100%;
+    position: fixed;
+    top: 100px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+
+    form {
+        width: 250px;
+        height: 250px;
+        background-color: #e5a9a9;
+        padding: 20px 10px;
+        border: 2px solid darkslategray;
+        border-radius: 3px;
+        top: 200px;
+
+        input,
+        textarea {
+            margin-bottom: 20px;
+        }
+    }
+}

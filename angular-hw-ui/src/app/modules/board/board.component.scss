@@ -1,0 +1,427 @@
+:host {
+    font-family: Arial;
+}
+
+.red-violet-crayola {
+    background-color: #af4d98;
+}
+
+.pastel-pink {
+    background-color: #e5a9a9;
+}
+
+.magic-mint {
+    background-color: #9df7e5;
+}
+
+.wild-orchid {
+    background-color: #d66ba0;
+}
+
+.upper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+
+    h1 {
+        margin-left: 20px;
+    }
+}
+
+div.allTasks {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px auto;
+    width: 90%;
+
+    div.todo {
+        width: 24%;
+
+        div.columnName {
+            background-color: lightgrey;
+            padding-top: 5px;
+
+            h2 {
+                text-align: center;
+            }
+
+            .colors {
+                padding: 0 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+
+                .dot {
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 50%;
+                }
+
+                .red-violet-crayola {
+                    background-color: #af4d98;
+                }
+
+                .pastel-pink {
+                    background-color: #e5a9a9;
+                }
+
+                .magic-mint {
+                    background-color: #9df7e5;
+                }
+
+                .wild-orchid {
+                    background-color: #d66ba0;
+                }
+            }
+        }
+
+        div.columnBlock {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            .taskItem {
+                width: 90%;
+                margin: 6px auto;
+                border: 1px solid darkslategray;
+
+                .addTaskBtn {
+                    width: 100%;
+                }
+
+                .addTaskForm {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 5px 10px;
+                }
+
+                .form {
+                    width: 90%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 2px 3px;
+                }
+            }
+
+            .task {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin: 4px auto;
+                padding: 0 10px;
+                height: 2.5rem;
+
+                .taskIcons {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+                    width: 30%;
+
+                    span {
+                        margin: 0 3px;
+                    }
+                }
+            }
+        }
+    }
+
+    div.inProgress {
+        width: 24%;
+
+        div.columnName {
+            background-color: lightgrey;
+            padding-top: 5px;
+
+            h2 {
+                text-align: center;
+            }
+
+            .colors {
+                padding: 0 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+
+                .dot {
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 50%;
+                }
+
+                .red-violet-crayola {
+                    background-color: #af4d98;
+                }
+
+                .pastel-pink {
+                    background-color: #e5a9a9;
+                }
+
+                .magic-mint {
+                    background-color: #9df7e5;
+                }
+
+                .wild-orchid {
+                    background-color: #d66ba0;
+                }
+            }
+        }
+
+        div.columnBlock {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            .taskItem {
+                width: 90%;
+                margin: 6px auto;
+                border: 1px solid darkslategray;
+
+                .addTaskBtn {
+                    width: 100%;
+                }
+
+                .addTaskForm {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 5px 10px;
+                }
+
+                .form {
+                    width: 90%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 2px 3px;
+                }
+            }
+
+            .task {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin: 4px auto;
+                padding: 0 10px;
+                height: 2.5rem;
+
+                .taskIcons {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+                    width: 30%;
+
+                    span {
+                        margin: 0 3px;
+                    }
+                }
+            }
+        }
+    }
+
+    div.done {
+        width: 24%;
+
+        div.columnName {
+            background-color: lightgrey;
+            padding-top: 5px;
+
+            h2 {
+                text-align: center;
+            }
+
+            .colors {
+                padding: 0 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+
+                .dot {
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 50%;
+                }
+
+                .red-violet-crayola {
+                    background-color: #af4d98;
+                }
+
+                .pastel-pink {
+                    background-color: #e5a9a9;
+                }
+
+                .magic-mint {
+                    background-color: #9df7e5;
+                }
+
+                .wild-orchid {
+                    background-color: #d66ba0;
+                }
+            }
+        }
+
+        div.columnBlock {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            .taskItem {
+                width: 90%;
+                margin: 6px auto;
+                border: 1px solid darkslategray;
+
+                .addTaskBtn {
+                    width: 100%;
+                }
+
+                .addTaskForm {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 5px 10px;
+                }
+
+                .form {
+                    width: 90%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 2px 3px;
+                }
+            }
+
+            .task {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin: 4px auto;
+                padding: 0 10px;
+                height: 2.5rem;
+
+                .taskIcons {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+                    width: 30%;
+
+                    span {
+                        margin: 0 3px;
+                    }
+                }
+            }
+        }
+    }
+
+    div.archived {
+        width: 24%;
+
+        div.columnName {
+            background-color: lightgrey;
+            padding-top: 5px;
+
+            h2 {
+                text-align: center;
+            }
+
+            .colors {
+                padding: 0 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+
+                .dot {
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 50%;
+                }
+
+                .red-violet-crayola {
+                    background-color: #af4d98;
+                }
+
+                .pastel-pink {
+                    background-color: #e5a9a9;
+                }
+
+                .magic-mint {
+                    background-color: #9df7e5;
+                }
+
+                .wild-orchid {
+                    background-color: #d66ba0;
+                }
+            }
+        }
+
+        div.columnBlock {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            .taskItem {
+                width: 90%;
+                margin: 6px auto;
+                border: 1px solid darkslategray;
+
+                .addTaskBtn {
+                    width: 100%;
+                }
+
+                .form {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin: 5px 10px;
+                }
+            }
+
+            .task {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin: 4px auto;
+                padding: 0 10px;
+                height: 2.5rem;
+
+                .taskIcons {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+                    width: 30%;
+
+                    span {
+                        margin: 0 3px;
+                    }
+                }
+            }
+
+            .hideArchivedTasksBtn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+}
