@@ -27,6 +27,14 @@
     h1 {
         margin-left: 20px;
     }
+
+    .upperNav {
+        width: 55%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
 
 div.allTaskComments {

@@ -13,6 +13,9 @@ import { CommentsService } from 'src/app/core/services/task-service/comments.ser
   styleUrls: ['./task.component.scss']
 })
 export class TaskComponent implements OnInit, OnDestroy {
+  toDashboardPage: boolean = true;
+  toBoardPage: boolean = true;
+
   private routeSub!: Subscription;
   public taskId: string | undefined;
 

@@ -3,6 +3,9 @@
         <h1>Board</h1>
     </div>
     <div>
+        <app-navigation [toDashboardPage]="toDashboardPage" [toBoardPage]="toBoardPage"></app-navigation>
+    </div>
+    <div>
         <app-sorting (newSortingEvent)="changeSortingParams($event)"></app-sorting>
     </div>
 </div>

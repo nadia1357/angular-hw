@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Board } from 'src/app/models/board';
@@ -11,10 +11,13 @@ import { BoardsService } from 'src/app/core/services/dasboard-service/boards.ser
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  toDashboardPage: boolean = false;
+  toBoardPage: boolean = false;
+
   public title = 'board';
   boards: Board[] = [];
   searchedBoardName: string = '';
-  oldBoardName: string ='';
+  oldBoardName: string = '';
   selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
   name: string = '';
   sort: string = 'Date';

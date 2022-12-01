@@ -1,0 +1,5 @@
+<div class="nav">
+    <button *ngIf="toDashboardPage" class="navBtn" type="button" [routerLink]="['/dashboard']">Dashboard</button>
+    <button *ngIf="toBoardPage" class="navBtn" type="button" [routerLink]="['/board']">Board</button>
+    <button class="navBtn" type="button" [routerLink]="['']">LogOut</button>
+</div>

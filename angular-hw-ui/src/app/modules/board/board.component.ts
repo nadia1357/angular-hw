@@ -15,6 +15,9 @@ import { TasksService } from 'src/app/core/services/board-service/tasks.service'
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit, OnDestroy {
+  toDashboardPage: boolean = true;
+  toBoardPage: boolean = false;
+
   private routeSub!: Subscription;
   public id: string = '';
 

@@ -1,1 +1,27 @@
-<p>home works!</p>
+<div class="upper">
+    <h1>Dashboard</h1>
+</div>
+
+<form *ngIf="registeredUser" class="signInForm" (submit)="onSubmitSignIn()">
+    <div>
+        <label for="login">Login</label>
+        <input type="text" [(ngModel)]="signInForm.login" id="login" required name="login">
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" [(ngModel)]="signInForm.password" id="password" required name="password">
+    </div>
+    <button class="submitBtn">Sign In</button>
+</form>
+
+<form *ngIf="newUser" class="registerForm" #registerForm="ngForm" (submit)="onSubmitRegister()">
+    <div>
+        <label for="loginReg">Login</label>
+        <input type="text" [(ngModel)]="registerForm.login" id="loginReg" required name="login">
+    </div>
+    <div>
+        <label for="passwordReg">Password</label>
+        <input type="password" [(ngModel)]="registerForm.password" id="passwordReg" required name="password">
+    </div>
+    <button class="submitBtn">Register</button>
+</form>
