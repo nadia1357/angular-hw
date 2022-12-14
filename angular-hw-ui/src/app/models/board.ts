@@ -1,7 +1,7 @@
 export interface Board {
     name: string,
-    id: string,
-    created_by: string,
+    _id: string,
+    userId: string,
     created_at: Date,
     creationDate: string,
     description: string,

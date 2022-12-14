@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import { Board } from 'src/app/models/board';
 
 @Injectable({
@@ -9,34 +9,30 @@ import { Board } from 'src/app/models/board';
 })
 export class BoardsService {
   boards: Board[] = [];
+  private _BOARDS_URL = 'http://localhost:8080/api/boards';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) { }
 
-  getBoards(boardsKey: string) {
-    let boardsFromLocalStorage = localStorage.getItem(boardsKey);
-    if (boardsFromLocalStorage) {
-      this.boards = JSON.parse(boardsFromLocalStorage);
-    } else this.boards = [];
-    return of(this.boards);
+  getBoards(): Observable<Board[]> {
+    return this.http.get<Board[]>(this._BOARDS_URL);
   }
 
-  getBoardByName(boardsKey: string, boardName: string) {
-    let boardsFromLocalStorage = localStorage.getItem(boardsKey);
+  getBoardByName(boardName: string) {
+    
+    /*let boardsFromLocalStorage = localStorage.getItem(boardsKey);
     if (boardsFromLocalStorage) {
       this.boards = JSON.parse(boardsFromLocalStorage);
     } else this.boards = [];
     let board: any = this.boards.find((item: any) => item.name === boardName);
     this.boards = [];
-    this.boards.push(board);
+    this.boards.push(board);*/
   }
 
-  addNewBoard(boardsKey: string, board: any) {
-    let boardsFromLocalStorage = localStorage.getItem(boardsKey);
-    if (boardsFromLocalStorage) {
-      this.boards = JSON.parse(boardsFromLocalStorage);
-    } else this.boards = [];
-    this.boards.push(board);
-    localStorage.setItem(boardsKey, JSON.stringify(this.boards));
+  addNewBoard(board: Board): Observable<unknown> {
+    return this.http.post(this._BOARDS_URL, board);
   }
 
   editBoardName(boardsKey: string, oldBoardName: string, newBoardName: string) {

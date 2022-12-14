@@ -1,27 +1,22 @@
 <div class="upper">
-    <h1>Dashboard</h1>
+    <h1>ToDo App</h1>
 </div>
 
-<form *ngIf="registeredUser" class="signInForm" (submit)="onSubmitSignIn()">
-    <div>
-        <label for="login">Login</label>
-        <input type="text" [(ngModel)]="signInForm.login" id="login" required name="login">
+<form ngForm class="loginForm">
+    <div class="input">
+        <label for="email">Email</label>
+        <input type="text" [(ngModel)]="email" id="email" required name="email">
     </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" [(ngModel)]="signInForm.password" id="password" required name="password">
-    </div>
-    <button class="submitBtn">Sign In</button>
-</form>
 
-<form *ngIf="newUser" class="registerForm" #registerForm="ngForm" (submit)="onSubmitRegister()">
-    <div>
-        <label for="loginReg">Login</label>
-        <input type="text" [(ngModel)]="registerForm.login" id="loginReg" required name="login">
+    <div class="input">
+        <label for="password">Password</label>
+        <input type="password" [(ngModel)]="password" id="password" required name="password">
     </div>
-    <div>
-        <label for="passwordReg">Password</label>
-        <input type="password" [(ngModel)]="registerForm.password" id="passwordReg" required name="password">
+
+    <div class="sbmBtn">
+        <button class="submitBtn" (click)="onSubmitLogin()">Login</button>
+        <button class="submitBtn" (click)="onSubmitRegister()">Register</button>
     </div>
-    <button class="submitBtn">Register</button>
+
+    <button class="forgetPasswordBtn" (click)="onSubmitForgetPassword()">Forget password</button>
 </form>

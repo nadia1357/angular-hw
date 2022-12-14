@@ -4,16 +4,13 @@ const boardSchema = new mongoose.Schema({
   name: {
     type: String
   },
-  boardId: {
+  userId: {
     type: String
   },
   created_at: {
     type: Date
   },
   creationDate: {
-    type: String
-  },
-  created_by: {
     type: String
   },
   description: {

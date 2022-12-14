@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { sortParams, orderParams, selectParams } from 'src/app/models/paramArrays';
 import { BoardsService } from 'src/app/core/services/dasboard-service/boards.service';
+import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,21 +32,15 @@ export class DashboardComponent implements OnInit {
   editCurrentBoard: boolean = false;
   editBoardForm?: FormGroup;
 
-  deleteCurrentBoard: boolean = false;
-  deleteBoardForm?: FormGroup;
-
-  boardsKey: string = 'boards';
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
-    private BoardsService: BoardsService,
+    private boardsService: BoardsService,
     private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
-    let allBoards: any = localStorage.getItem(this.boardsKey);
-    if (allBoards) {
-      this.boards = JSON.parse(allBoards);
-    } else this.boards = [];
+    refreshBoards();
 
     this.addBoardForm = this.formBuilder.group({
       name: ['', [
@@ -62,15 +58,24 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   onSubmit(): void {
     let newBoard: Board = this.addBoardForm?.value;
     newBoard.created_at = new Date();
     newBoard.creationDate = formatDate(newBoard.created_at, 'dd/MM/yyyy', 'en');
     newBoard.numberOfTasks = 0;
-    newBoard.id = newBoard.name;
-    this.BoardsService.addNewBoard(this.boardsKey, newBoard);
-    let allBoards: any = localStorage.getItem('boards');
-    this.boards = JSON.parse(allBoards);
+    newBoard._id = '';
+    this.boardsService.addNewBoard(newBoard)
+    .pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
+      () => {return;}, () => {return;}
+      );  
+    
     this.addBoardForm?.reset();
     this.createNewBoard = false;
   }
@@ -80,12 +85,12 @@ export class DashboardComponent implements OnInit {
   }
 
   onEdit(): void {
-    let newBoardName = this.editBoardForm?.value.name;
+    /*let newBoardName = this.editBoardForm?.value.name;
     this.BoardsService.editBoardName(this.boardsKey, this.oldBoardName, newBoardName);
     let allBoards: any = localStorage.getItem(this.boardsKey);
     this.boards = JSON.parse(allBoards);
     this.editBoardForm?.reset();
-    this.editCurrentBoard = false;
+    this.editCurrentBoard = false;*/
   }
 
   editBoard(board: any): void {
@@ -94,9 +99,9 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteBoard(board: { name: any; }): void {
-    this.BoardsService.deleteBoard(this.boardsKey, board);
+    /*this.BoardsService.deleteBoard(this.boardsKey, board);
     let allBoards: any = localStorage.getItem(this.boardsKey);
-    this.boards = JSON.parse(allBoards);
+    this.boards = JSON.parse(allBoards);*/
   }
 
   changeSortingParams(selectedParams: selectParams) {
@@ -135,4 +140,11 @@ export class DashboardComponent implements OnInit {
       this.currentOrder = 'ASC';
     }
   }
+}
+
+private refreshBoards(): any {
+  this.boardsService.getBoards()
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe((boards) => this.boards = boards); 
 }

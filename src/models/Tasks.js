@@ -1,58 +1,29 @@
 const mongoose = require('mongoose');
 
-const loadSchema =  new mongoose.Schema({
-  created_by: {
+const taskSchema =  new mongoose.Schema({
+  userId: {
     type: String
   },
-  assigned_to: {
-    type: String
-  },
-  completed_to: {
+  boardId: {
     type: String
   },
   status: {
     type: String,
-    enum: ['NEW', 'POSTED', 'ASSIGNED', 'SHIPPED']
-  },
-  state: {
-    type: String,
-    enum: ['En route to Pick Up', 'Arrived to Pick Up', 'En route to delivery', 'Arrived to delivery']
+    enum: ['todo', 'inProgress', 'done']
   },
   name: {
     type: String
   },
-  payload: {
-    type: Number
-  },
-  pickup_address: {
+  creationDate: {
     type: String
   },
-  dimensions: {
-    width: {
-      type: Number
-    },
-    length: {
-      type: Number
-    }, 
-    height: {
-      type: Number
-    }
-  },
-  logs: [{
-    message: {
-      type: String
-    }, 
-    time: {
-      type: String
-    }
-  }],
-  created_date: {
-    type: String
+  comments: {
+    type: [String]
   }
 });
 
-const Load = mongoose.model('load', loadSchema);
+const Task = mongoose.model('task', taskSchema);
 
 module.exports = {
-  Load
+  Task
 };

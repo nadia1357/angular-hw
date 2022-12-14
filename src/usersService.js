@@ -21,14 +21,13 @@ const authJWT = (auth) => {
 }
 
 const createProfile = async (req, res, next) => {
-  const { email, password, role } = req.body;
+  const { email, password } = req.body;
   const registeredUser = await User.findOne({ email: email });
   const currentDate = new Date().toString();
 
   const user = new User({
     email: email,
     password: await bcrypt.hash(password, 10),
-    role: role,
     created_date: currentDate
   });
 
@@ -48,7 +47,7 @@ const createProfile = async (req, res, next) => {
 const login = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (user && await bcrypt.compare(String(req.body.password), String(user.password))) {
-    const payload = { email: user.email, password: user.password, userId: user._id, role: user.role };
+    const payload = { email: user.email, password: user.password, userId: user._id };
     const jwtToken = jwt.sign(payload, 'secret-jwt-key');
     return res.status(200).json({ jwt_token: jwtToken, 'message': 'User is authorized' });
   } else {
@@ -66,23 +65,12 @@ const forgotPassword = async (req, res, next) => {
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
     await User.findOneAndUpdate({ email: req.body.email }, { $set: { password: hashedNewPassword} })
     .then(result => {
-      const payload = { email: user.email, password: hashedNewPassword, userId: user._id, role: user.role };
+      const payload = { email: user.email, password: hashedNewPassword, userId: user._id };
       const jwtToken = jwt.sign(payload, 'secret-jwt-key');
     })
     .then(result => res.status(200).json({ 'message': 'New password sent to your email address' }));
   } else {
     return res.status(400).json({ 'message': 'Not authorized' });
-  }
-}
-
-const getProfileInfo = async (req, res, next) => {
-  const { authorization } = req.headers;
-  const user = authJWT(authorization);
-
-  if (user) {
-    return res.status(200).json({ 'user': user });
-  } else {
-    return res.status(400).json({ 'message': 'User is not found' });
   }
 }
 
@@ -99,26 +87,9 @@ const deleteProfile = async (req, res, next) => {
     })
 }
 
-const changeProfilePassword = async (req, res, next) => {
-  const { authorization } = req.headers;
-  const user = authJWT(authorization);
-  const { oldPassword, newPassword } = req.body;
-
-  const thisUser = await User.findOne({ email: user.email });
-  if (thisUser && await bcrypt.compare(String(oldPassword), String(user.password))) {
-      thisUser.password = await bcrypt.hash(newPassword, 10);
-      User.findOneAndUpdate({ email: user.email }, {$set: { password: thisUser.password}})
-      .then (user => res.status(200).json({ 'message': `Password changed successfully` }))
-    } else {
-      return res.status(400).json({ 'message': 'Password is not changed' })
-    }  
-}
-
 module.exports = {
   createProfile,
   login,
   forgotPassword,
-  getProfileInfo,
-  deleteProfile,
-  changeProfilePassword
+  deleteProfile
 };
