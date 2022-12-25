@@ -41,7 +41,7 @@
             </form>
         </div>
 
-        <div class="comment commentItem" *ngFor="let comment of (comments | searchComment: searchedCommentName)">
+        <div class="comment commentItem" *ngFor="let comment of comments">
             <h4>{{ comment }}</h4>
             <div class="commentIcons">
                 <fa-icon [icon]="faPenToSquare" (click)="editComment(comment)"></fa-icon>

@@ -45,11 +45,11 @@
                 </form>
             </div>
 
-            <div class="taskItem task item-box" *ngFor="let todoTask of (todoTasks | searchTask: searchedTaskName)" cdkDrag>
+            <div class="taskItem task item-box" *ngFor="let todoTask of (todoTasks)" cdkDrag>
                 <h4>{{ todoTask.name }}</h4>
                 <div class="taskIcons">
                     <fa-icon [icon]="faPenToSquare" (click)="editTask(todoTask, 'todo')"></fa-icon>
-                    <fa-icon [icon]="faComment" [routerLink]="['/task', todoTask.id]"></fa-icon>
+                    <fa-icon [icon]="faComment" [routerLink]="['/task', todoTask._id]"></fa-icon>
                     <fa-icon [icon]="faTrashCan" (click)="deleteTask(todoTask)"></fa-icon>
                     <fa-icon [icon]="faBoxArchive" (click)="archiveTask(todoTask)"></fa-icon>
                 </div>
@@ -92,11 +92,11 @@
                 </form>
             </div>
 
-            <div class="taskItem task item-box" *ngFor="let inProgressTask of (inProgressTasks | searchTask: searchedTaskName)" cdkDrag>
+            <div class="taskItem task item-box" *ngFor="let inProgressTask of (inProgressTasks)" cdkDrag>
                 <h4>{{ inProgressTask.name }}</h4>
                 <div class="taskIcons">
                     <fa-icon [icon]="faPenToSquare" (click)="editTask(inProgressTask, 'inProgress')"></fa-icon>
-                    <fa-icon [icon]="faComment" [routerLink]="['/task', inProgressTask.id]"></fa-icon>
+                    <fa-icon [icon]="faComment" [routerLink]="['/task', inProgressTask._id]"></fa-icon>
                     <fa-icon [icon]="faTrashCan" (click)="deleteTask(inProgressTask)"></fa-icon>
                     <fa-icon [icon]="faBoxArchive" (click)="archiveTask(inProgressTask)"></fa-icon>
                 </div>
@@ -138,11 +138,11 @@
                 </form>
             </div>
 
-            <div class="taskItem task item-box" *ngFor="let doneTask of (doneTasks | searchTask: searchedTaskName)" cdkDrag>
+            <div class="taskItem task item-box" *ngFor="let doneTask of (doneTasks)" cdkDrag>
                 <h4>{{ doneTask.name }}</h4>
                 <div class="taskIcons">
                     <fa-icon [icon]="faPenToSquare" (click)="editTask(doneTask, 'done')"></fa-icon>
-                    <fa-icon [icon]="faComment" [routerLink]="['/task', doneTask.id]"></fa-icon>
+                    <fa-icon [icon]="faComment" [routerLink]="['/task', doneTask._id]"></fa-icon>
                     <fa-icon [icon]="faTrashCan" (click)="deleteTask(doneTask)"></fa-icon>
                     <fa-icon [icon]="faBoxArchive" (click)="archiveTask(doneTask)"></fa-icon>
                 </div>
@@ -176,11 +176,11 @@
                 </form>
             </div>
 
-            <div class="taskItem task" *ngFor="let archivedTask of (archivedTasks | searchTask: searchedTaskName)">
+            <div class="taskItem task" *ngFor="let archivedTask of (archivedTasks)">
                 <h4>{{ archivedTask.name }}</h4>
                 <div class="taskIcons">
                     <fa-icon [icon]="faPenToSquare" (click)="editTask(archivedTask, 'archived')"></fa-icon>
-                    <fa-icon [icon]="faComment" [routerLink]="['/task', archivedTask.id]"></fa-icon>
+                    <fa-icon [icon]="faComment" [routerLink]="['/task', archivedTask._id]"></fa-icon>
                     <fa-icon [icon]="faTrashCan" (click)="deleteTask(archivedTask)"></fa-icon>
                 </div>
             </div>

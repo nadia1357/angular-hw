@@ -16,7 +16,7 @@ export class HomeService {
   constructor(private http: HttpClient,
     private router: Router) { }
 
-  private setUserTokenToStorage(token: string) {
+  public setUserTokenToStorage(token: string) {
     const json = JSON.stringify(token);
     localStorage.setItem('token', json);
   }
@@ -46,7 +46,7 @@ export class HomeService {
       );
   }
 
-  registerUser(email: string, password: string) {
+  registerUser(email: string, password: string): Observable<unknown> {
     return this.http.post<{
       jwt_token: string
     }>(this._REGISTER_URL, { email, password })
@@ -59,7 +59,16 @@ export class HomeService {
       );
   }
 
-  changePassword(email: string) {
-
+  changePassword(email: string, password: string): Observable<unknown> {
+    return this.http.put<{
+      jwt_token: string
+    }>(this._FORGOT_PASSWORD_URL, { email, password })
+      .pipe(
+        tap(({ jwt_token: token }) => {
+          console.log(token);
+          this.setUserTokenToStorage(token);
+          this.router.navigate(['dashboard']);
+        })
+      );
   }
 }

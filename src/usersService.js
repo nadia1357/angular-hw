@@ -1,7 +1,7 @@
 const { User } = require('./models/Users.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const passfather = require('passfather');
+//const passfather = require('passfather'); // for changing password by sending a link to user's email
 
 const authJWT = (auth) => {
   if (!auth) {
@@ -59,7 +59,8 @@ const forgotPassword = async (req, res, next) => {
   const thisUser = await User.findOne({ email: req.body.email });
   const { authorization } = req.headers;
   const user = authJWT(authorization);
-  const newPassword = passfather();
+  //const newPassword = passfather();
+  const newPassword = req.body.password;
 
   if (user.email === thisUser.email) {
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
@@ -67,13 +68,14 @@ const forgotPassword = async (req, res, next) => {
     .then(result => {
       const payload = { email: user.email, password: hashedNewPassword, userId: user._id };
       const jwtToken = jwt.sign(payload, 'secret-jwt-key');
+      return res.status(200).json({ jwt_token: jwtToken, 'message': 'Password changed successfully' });
     })
-    .then(result => res.status(200).json({ 'message': 'New password sent to your email address' }));
   } else {
     return res.status(400).json({ 'message': 'Not authorized' });
   }
 }
 
+//this function isn't used now, but could be used with updating the app in future
 const deleteProfile = async (req, res, next) => {
   const { authorization } = req.headers;
   const user = authJWT(authorization);

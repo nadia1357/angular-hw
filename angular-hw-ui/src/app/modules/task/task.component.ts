@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faTrashCan, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Task } from 'src/app/models/task';
-import { sortParams, orderParams, selectParams, colors } from 'src/app/models/paramArrays';
-import { CommentsService } from 'src/app/core/services/task-service/comments.service';
+import { selectParams, colors } from 'src/app/models/paramArrays';
+import { TasksService } from 'src/app/core/services/board-service/tasks.service';
 
 @Component({
   selector: 'app-task',
@@ -17,7 +17,7 @@ export class TaskComponent implements OnInit, OnDestroy {
   toBoardPage: boolean = true;
 
   private routeSub!: Subscription;
-  public taskId: string | undefined;
+  public taskId: string = '';
 
   faTrashCan = faTrashCan;
   faPenToSquare = faPenToSquare;
@@ -31,7 +31,6 @@ export class TaskComponent implements OnInit, OnDestroy {
   public currentCommentColor: string = 'red-violet-crayola';
 
   oldComment: string = '';
-  searchedCommentName: string = '';
   selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
 
   createNewComment: boolean = false;
@@ -47,10 +46,10 @@ export class TaskComponent implements OnInit, OnDestroy {
   order: string = 'ASC';
   currentOrder: string = 'ASC';
 
-  tasksKey: string = 'tasks';
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
-    private CommentsService: CommentsService,
+    private tasksService: TasksService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute
   ) {
@@ -60,12 +59,7 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    let allTasks: any = localStorage.getItem(this.tasksKey);
-    if (allTasks) {
-      this.tasks = JSON.parse(allTasks);
-    } else this.tasks = [];
-    this.task = this.tasks.find((item: any) => item.id === this.taskId);
-    this.comments = this.task.comments;
+    this.refreshComments();
 
     this.addCommentForm = this.formBuilder.group({
       name: ['', [
@@ -82,8 +76,10 @@ export class TaskComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.routeSub.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   changeColor(colorNumber: number) {
@@ -96,18 +92,16 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    let newComment: string = this.addCommentForm?.value.name;
-    this.CommentsService.addNewComment(this.tasksKey, newComment, this.taskId);
+    let commentsInfo: string[] = ['new comment', this.addCommentForm?.value.name];
+    let newTask: Partial<Task> = { comments: commentsInfo };
 
-    let allTasks: any = localStorage.getItem(this.tasksKey);
-    if (allTasks) {
-      this.tasks = JSON.parse(allTasks);
-      this.task = this.tasks.find((item: any) => item.id === this.taskId);
-      this.comments = this.task.comments;
-    } else {
-      this.tasks = [];
-      this.comments = [];
-    }
+    this.tasksService.editTask(this.taskId, newTask)
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: () => this.refreshComments(),
+        error: () => alert('The comment wasn`t created. Please try again')
+      });
 
     this.addCommentForm?.reset();
     this.createNewComment = false;
@@ -118,18 +112,16 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   onEdit(): void {
-    let newComment = this.editCommentForm?.value.name;
-    this.CommentsService.editComment(this.tasksKey, this.oldComment, newComment, this.taskId);
+    let commentsInfo: string[] = ['comment to change', this.oldComment, this.editCommentForm?.value.name];
+    let newTask: Partial<Task> = { comments: commentsInfo };
 
-    let allTasks: any = localStorage.getItem(this.tasksKey);
-    if (allTasks) {
-      this.tasks = JSON.parse(allTasks);
-      this.task = this.tasks.find((item: any) => item.id === this.taskId);
-      this.comments = this.task.comments;
-    } else {
-      this.tasks = [];
-      this.comments = [];
-    }
+    this.tasksService.editTask(this.taskId, newTask)
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: () => this.refreshComments(),
+        error: () => alert('The comment wasn`t changed. Please try again')
+      });
 
     this.editCommentForm?.reset();
     this.editCurrentComment = false;
@@ -141,53 +133,28 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   deleteComment(comment: string): void {
-    this.CommentsService.deleteComment(this.tasksKey, comment, this.taskId);
+    let commentsInfo: string[] = ['comment to delete', comment];
+    let newTask: Partial<Task> = { comments: commentsInfo };
 
-    let allTasks: any = localStorage.getItem(this.tasksKey);
-    if (allTasks) {
-      this.tasks = JSON.parse(allTasks);
-      this.task = this.tasks.find((item: any) => item.id === this.taskId);
-      this.comments = this.task.comments;
-    } else {
-      this.tasks = [];
-      this.comments = [];
-    }
+    this.tasksService.editTask(this.taskId, newTask)
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: () => this.refreshComments(),
+        error: () => alert('The comment wasn`t deleted. Please try again')
+      });
   }
 
   changeSortingParams(selectedParams: selectParams) {
-    this.searchedCommentName = selectedParams.name;
+    this.selectedParams = selectedParams;
+  }
 
-    this.sort = selectedParams.sort;
-    switch (this.sort) {
-      case sortParams[0]:
-        this.comments.sort((a: any, b: any) => {
-          let nameA = a.toLowerCase();
-          let nameB = b.toLowerCase();
-          if (nameA < nameB) return -1;
-          if (nameA > nameB) return 1;
-          return 0;
-        })
-        break;
-      case sortParams[1]:
-        this.comments.sort((a: any, b: any) => +a.date - +b.date);
-        break;
-      case sortParams[2]:
-        this.comments.sort((a: any, b: any) => a.numberOfTasks - b.numberOfTasks);
-        break;
-    }
-
-    this.order = selectedParams.order;
-    if (this.order === orderParams[1] && this.currentOrder === 'ASC') {
-      this.comments.reverse();
-      this.currentOrder = 'DESC';
-    } else if (this.order === orderParams[0] && this.currentOrder === 'DESC') {
-      this.comments.reverse();
-      this.currentOrder = 'ASC';
-    } else if (this.order === orderParams[1] && this.currentOrder === 'DESC') {
-      this.currentOrder = 'DESC';
-    }
-    else if (this.order === orderParams[0] && this.currentOrder === 'ASC') {
-      this.currentOrder = 'ASC';
-    }
+  private refreshComments() {
+    this.tasksService.getTasks(this.selectedParams)
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe((tasks) => {
+        this.tasks = tasks;
+      });
   }
 }

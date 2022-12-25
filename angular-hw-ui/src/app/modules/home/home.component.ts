@@ -10,6 +10,8 @@ import { Subject, takeUntil } from 'rxjs';
 export class HomeComponent implements OnDestroy {
   email = '';
   password = '';
+  previousPassword: boolean = true;
+  setNewPassword: boolean = false;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -35,6 +37,14 @@ export class HomeComponent implements OnDestroy {
   }
 
   onSubmitForgetPassword() {
-    this.homeService.changePassword(this.email);
+    this.previousPassword = false;
+    this.setNewPassword = true;
+  }
+
+  onSubmitSetNewPassword() {
+    this.homeService.changePassword(this.email, this.password)
+    .pipe(
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 }

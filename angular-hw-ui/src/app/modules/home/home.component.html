@@ -9,14 +9,16 @@
     </div>
 
     <div class="input">
-        <label for="password">Password</label>
+        <label *ngIf="previousPassword" for="password">Password</label>
+        <label *ngIf="setNewPassword" for="newPassword">New password</label>
         <input type="password" [(ngModel)]="password" id="password" required name="password">
     </div>
 
-    <div class="sbmBtn">
+    <div *ngIf="previousPassword" class="sbmBtn">
         <button class="submitBtn" (click)="onSubmitLogin()">Login</button>
         <button class="submitBtn" (click)="onSubmitRegister()">Register</button>
     </div>
 
-    <button class="forgetPasswordBtn" (click)="onSubmitForgetPassword()">Forget password</button>
+    <button *ngIf="previousPassword" class="forgetPasswordBtn" (click)="onSubmitForgetPassword()">Forget password</button>
+    <button *ngIf="setNewPassword" class="submitBtn" (click)="onSubmitSetNewPassword()">Set new password</button>
 </form>

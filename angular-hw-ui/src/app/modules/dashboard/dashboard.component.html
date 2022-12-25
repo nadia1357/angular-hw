@@ -17,14 +17,14 @@
         </button>
     </div>
 
-    <div class='board' *ngFor="let board of (boards | search: searchedBoardName)">
+    <div class='board' *ngFor="let board of (boards)">
         <h3>{{ board.name }}</h3>
         <p *ngIf="board.description">Description: {{ board.description }}</p>
         <p *ngIf="board.creationDate">Creation Date: {{ board.creationDate }}</p>
         <p *ngIf="board.numberOfTasks">Number of Tasks: {{ board.numberOfTasks }}</p>
 
         <div class="board_btn">
-            <button type="button" [routerLink]="['/board', board.id]">Go To Board</button>
+            <button type="button" [routerLink]="['/board', board._id]" (click)="throwBoardId(board)">Go To Board</button>
             <button type="button" (click)="editBoard(board)">Edit</button>
             <button type="button" (click)="deleteBoard(board)">Delete</button>
         </div>

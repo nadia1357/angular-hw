@@ -1,79 +1,50 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Task } from 'src/app/models/task';
-import { Board} from 'src/app/models/board';
+import { selectParams} from 'src/app/models/paramArrays';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
   tasks: Task[] = [];
-  boards: Board[] = [];
+
+  private _TASKS_URL = 'http://localhost:8080/api/tasks';
 
   constructor(private http: HttpClient) { }
 
-  getTasks(tasksKey: string) {
-    let tasksFromLocalStorage = localStorage.getItem(tasksKey);
-    if (tasksFromLocalStorage) {
-      this.tasks = JSON.parse(tasksFromLocalStorage);
-    } else this.tasks = [];
-    return of(this.tasks);
-  }
-
-  getTaskByName(tasksKey: string, taskName: string) {
-    let tasksFromLocalStorage = localStorage.getItem(tasksKey);
-    if (tasksFromLocalStorage) {
-      this.tasks = JSON.parse(tasksFromLocalStorage);
-    } else this.tasks = [];
-    let task: any = this.tasks.find((item: any) => item.name === taskName);
-    this.tasks = [];
-    this.tasks.push(task);
-  }
-
-  addNewTask(tasksKey: string, task: any) {
-    let tasksFromLocalStorage = localStorage.getItem(tasksKey);
-    if (tasksFromLocalStorage) {
-      this.tasks = JSON.parse(tasksFromLocalStorage);
-    } else this.tasks = [];
-    this.tasks.push(task);
-    localStorage.setItem(tasksKey, JSON.stringify(this.tasks));
-  }
-
-  editTaskName(tasksKey: string, oldTaskName: string, newTaskName: string) {
-    let tasksFromLocalStorage = localStorage.getItem(tasksKey);
-    if (tasksFromLocalStorage) {
-      this.tasks = JSON.parse(tasksFromLocalStorage);
-    } else this.tasks = [];
-    this.tasks.forEach((task, index) => {
-      if (task.name === oldTaskName) {
-        this.tasks[index].name = newTaskName;
-      }
+  getTasks(selectedParams: selectParams): Observable<Task[]> {
+    return this.http.get<Task[]>(this._TASKS_URL, {
+      params: new HttpParams()
+        .set('name', selectedParams.name)
+        .set('sort', selectedParams.sort)
+        .set('order', selectedParams.order)
     });
-    localStorage.setItem(tasksKey, JSON.stringify(this.tasks));
   }
 
-  deleteTask(tasksKey: string, task: { name: any; }): any {
-    let tasksFromLocalStorage = localStorage.getItem(tasksKey);
-    if (tasksFromLocalStorage) {
-      this.tasks = JSON.parse(tasksFromLocalStorage);
-    } else this.tasks = [];
-    let deleteIndex = this.tasks.findIndex((item: any) => item.name == task.name);
-    this.tasks.splice(deleteIndex, 1);
-    localStorage.setItem(tasksKey, JSON.stringify(this.tasks));
+  getTaskById(taskId: string) {
+    const getTaskURL = this._TASKS_URL + '/' + taskId;
+    return this.http.get<Task>(getTaskURL);
   }
 
-  archiveTask(tasksKey: string, taskToArchive: {name: any}): any {
-    let tasksFromLocalStorage = localStorage.getItem(tasksKey);
-    if (tasksFromLocalStorage) {
-      this.tasks = JSON.parse(tasksFromLocalStorage);
-    } else this.tasks = [];
-    this.tasks.forEach((task, index) => {
-      if (task.name === taskToArchive.name) {
-        this.tasks[index].status = 'archived';
-      }
-    });
-    localStorage.setItem(tasksKey, JSON.stringify(this.tasks));
+  addNewTask(task: Partial<Task>): Observable<unknown> {
+    return this.http.post(this._TASKS_URL, task);
+  }
+
+  editTask(taskId: string, newTask: Partial<Task>) {
+    const editURL: string = this._TASKS_URL + '/' + taskId;
+    return this.http.put(editURL, newTask);
+  }
+
+  deleteTask(oldTaskId: string) {
+    const deleteURL: string = this._TASKS_URL + '/' + oldTaskId;
+    return this.http.delete(deleteURL);
+  }
+
+  archiveTask(oldTaskId: string) {
+    const editURL: string = this._TASKS_URL + '/' + oldTaskId;
+    const newTask: Partial<Task> = { status: 'archived' };
+    return this.http.put(editURL, newTask);
   }
 }

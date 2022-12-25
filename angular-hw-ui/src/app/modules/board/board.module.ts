@@ -6,12 +6,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppRoutingModule} from 'src/app/app-routing.module';
 import { BoardComponent } from './board.component';
 import { SharedModule } from '../../modules/shared/shared.module';
-import { SearchTaskPipe } from 'src/app/core/pipes/search-task.pipe';
 
 @NgModule({
   declarations: [
-    BoardComponent,
-    SearchTaskPipe
+    BoardComponent
   ],
   imports: [
     CommonModule,

@@ -5,7 +5,7 @@ const { createProfile, login,
 
 router.post('/auth/register', createProfile);
 router.post('/auth/login', login);
-router.post('/auth/forgot_password', forgotPassword);
+router.put('/auth/forgot_password', forgotPassword);
 router.delete('/users/me', deleteProfile);
 
 module.exports = {

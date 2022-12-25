@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule} from 'src/app/app-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { SharedModule } from '../../modules/shared/shared.module';
-import { SearchPipe } from '../../core/pipes/search.pipe';
 
 @NgModule({
   imports: [
@@ -14,8 +13,7 @@ import { SearchPipe } from '../../core/pipes/search.pipe';
     AppRoutingModule
   ],
   declarations: [
-    DashboardComponent,
-    SearchPipe
+    DashboardComponent
   ],
   exports: [
     DashboardComponent

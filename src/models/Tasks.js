@@ -14,7 +14,7 @@ const taskSchema =  new mongoose.Schema({
   name: {
     type: String
   },
-  creationDate: {
+  created_at: {
     type: String
   },
   comments: {

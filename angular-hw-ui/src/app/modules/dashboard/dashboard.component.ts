@@ -3,9 +3,8 @@ import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { Board } from 'src/app/models/board';
-import { sortParams, orderParams, selectParams } from 'src/app/models/paramArrays';
-import { BoardsService } from 'src/app/core/services/dasboard-service/boards.service';
-import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
+import { selectParams } from 'src/app/models/paramArrays';
+import { BoardsService } from 'src/app/core/services/dashboard-service/boards.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,13 +17,9 @@ export class DashboardComponent implements OnInit {
 
   public title = 'board';
   boards: Board[] = [];
-  searchedBoardName: string = '';
-  oldBoardName: string = '';
+  currentBoardId: string = ''; 
+  oldBoardId: string = '';
   selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
-  name: string = '';
-  sort: string = 'Date';
-  order: string = 'ASC';
-  currentOrder: string = 'ASC';
 
   createNewBoard: boolean = false;
   addBoardForm?: FormGroup;
@@ -40,7 +35,7 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    refreshBoards();
+    this.refreshBoards();
 
     this.addBoardForm = this.formBuilder.group({
       name: ['', [
@@ -70,12 +65,13 @@ export class DashboardComponent implements OnInit {
     newBoard.numberOfTasks = 0;
     newBoard._id = '';
     this.boardsService.addNewBoard(newBoard)
-    .pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(
-      () => {return;}, () => {return;}
-      );  
-    
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: () => this.refreshBoards(),
+        error: () => alert('This board wasn`t created. Please try again')
+      });
+
     this.addBoardForm?.reset();
     this.createNewBoard = false;
   }
@@ -85,66 +81,47 @@ export class DashboardComponent implements OnInit {
   }
 
   onEdit(): void {
-    /*let newBoardName = this.editBoardForm?.value.name;
-    this.BoardsService.editBoardName(this.boardsKey, this.oldBoardName, newBoardName);
-    let allBoards: any = localStorage.getItem(this.boardsKey);
-    this.boards = JSON.parse(allBoards);
+    let newBoardName = this.editBoardForm?.value.name;
+    this.boardsService.editBoardName(this.oldBoardId, newBoardName)
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: () => this.refreshBoards(),
+        error: () => alert('The board name wasn`t changed. Please try again')
+      });
+
     this.editBoardForm?.reset();
-    this.editCurrentBoard = false;*/
+    this.editCurrentBoard = false;
   }
 
-  editBoard(board: any): void {
+  editBoard(board: Board): void {
     this.editCurrentBoard = true;
-    this.oldBoardName = board.name;
+    this.oldBoardId = board._id;
   }
 
-  deleteBoard(board: { name: any; }): void {
-    /*this.BoardsService.deleteBoard(this.boardsKey, board);
-    let allBoards: any = localStorage.getItem(this.boardsKey);
-    this.boards = JSON.parse(allBoards);*/
+  deleteBoard(board: Board): void {
+    this.oldBoardId = board._id;
+    this.boardsService.deleteBoard(this.oldBoardId)
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: () => this.refreshBoards(),
+        error: () => alert('The board wasn`t deleted. Please try again')
+      });
+  }
+
+  throwBoardId(board: Board): void {
+    this.currentBoardId = board._id;
   }
 
   changeSortingParams(selectedParams: selectParams) {
-    this.searchedBoardName = selectedParams.name;
-
-    this.sort = selectedParams.sort;
-    switch (this.sort) {
-      case sortParams[0]:
-        this.boards.sort((a: any, b: any) => {
-          let nameA = a.name.toLowerCase();
-          let nameB = b.name.toLowerCase();
-          if (nameA < nameB) return -1;
-          if (nameA > nameB) return 1;
-          return 0;
-        })
-        break;
-      case sortParams[1]:
-        this.boards.sort((a: any, b: any) => +a.date - +b.date);
-        break;
-      case sortParams[2]:
-        this.boards.sort((a: any, b: any) => a.numberOfTasks - b.numberOfTasks);
-        break;
-    }
-
-    this.order = selectedParams.order;
-    if (this.order === orderParams[1] && this.currentOrder === 'ASC') {
-      this.boards.reverse();
-      this.currentOrder = 'DESC';
-    } else if (this.order === orderParams[0] && this.currentOrder === 'DESC') {
-      this.boards.reverse();
-      this.currentOrder = 'ASC';
-    } else if (this.order === orderParams[1] && this.currentOrder === 'DESC') {
-      this.currentOrder = 'DESC';
-    }
-    else if (this.order === orderParams[0] && this.currentOrder === 'ASC') {
-      this.currentOrder = 'ASC';
-    }
+    this.selectedParams = selectedParams;
   }
-}
 
-private refreshBoards(): any {
-  this.boardsService.getBoards()
+  private refreshBoards(): any {
+    this.boardsService.getBoards(this.selectedParams)
       .pipe(
         takeUntil(this.destroy$)
-      ).subscribe((boards) => this.boards = boards); 
+      ).subscribe((boards) => this.boards = boards);
+  }
 }
