@@ -34,14 +34,14 @@
             <div *ngIf="createNewTaskToDo" class="taskItem">
                 <form class="form" *ngIf="addTaskForm" [formGroup]="addTaskForm" (ngSubmit)="onSubmit('todo')">
                     <input id="name" type="text" formControlName="name" placeholder="Task name">
-                    <button class="addTaskSubmitBtn" type="submit">Submit</button>
+                    <button appHighlight class="addTaskSubmitBtn" type="submit">Submit</button>
                 </form>
             </div>
 
             <div *ngIf="editCurrentTaskToDo" class="taskItem">
                 <form class="form" *ngIf="editTaskForm" [formGroup]="editTaskForm" (ngSubmit)="onEdit()">
                     <input id="name" type="text" formControlName="name" placeholder="New task name">
-                    <button class="btnSubmit" type="submit">Submit</button>
+                    <button appHighlight class="btnSubmit" type="submit">Submit</button>
                 </form>
             </div>
 
@@ -81,14 +81,14 @@
                 <form class="form" *ngIf="addTaskForm" [formGroup]="addTaskForm"
                     (ngSubmit)="onSubmit('inProgress')">
                     <input id="name" type="text" formControlName="name" placeholder="Task name">
-                    <button class="addTaskSubmitBtn" type="submit">Submit</button>
+                    <button appHighlight class="addTaskSubmitBtn" type="submit">Submit</button>
                 </form>
             </div>
 
             <div *ngIf="editCurrentTaskInProgress" class="taskItem">
                 <form class="form" *ngIf="editTaskForm" [formGroup]="editTaskForm" (ngSubmit)="onEdit()">
                     <input id="name" type="text" formControlName="name" placeholder="New task name">
-                    <button class="btnSubmit" type="submit">Submit</button>
+                    <button appHighlight class="btnSubmit" type="submit">Submit</button>
                 </form>
             </div>
 
@@ -127,14 +127,14 @@
             <div *ngIf="createNewTaskDone" class="taskItem">
                 <form class="form" *ngIf="addTaskForm" [formGroup]="addTaskForm" (ngSubmit)="onSubmit('done')">
                     <input id="name" type="text" formControlName="name" placeholder="Task name">
-                    <button class="addTaskSubmitBtn" type="submit">Submit</button>
+                    <button appHighlight class="addTaskSubmitBtn" type="submit">Submit</button>
                 </form>
             </div>
 
             <div *ngIf="editCurrentTaskDone" class="taskItem">
                 <form class="form" *ngIf="editTaskForm" [formGroup]="editTaskForm" (ngSubmit)="onEdit()">
                     <input id="name" type="text" formControlName="name" placeholder="New task name">
-                    <button class="btnSubmit" type="submit">Submit</button>
+                    <button appHighlight class="btnSubmit" type="submit">Submit</button>
                 </form>
             </div>
 
@@ -172,7 +172,7 @@
             <div *ngIf="editCurrentTaskArchived" class="taskItem">
                 <form class="form" *ngIf="editTaskForm" [formGroup]="editTaskForm" (ngSubmit)="onEdit()">
                     <input id="name" type="text" formControlName="name" placeholder="New task name">
-                    <button class="btnSubmit" type="submit">Submit</button>
+                    <button class="btnSubmit" appHighlight type="submit">Submit</button>
                 </form>
             </div>
 
@@ -186,7 +186,7 @@
             </div>
 
             <div class="taskItem">
-                <button class="hideArchivedTasksBtn" (click)="hideArchivedTasks()">Hide archived tasks</button>
+                <button class="hideArchivedTasksBtn" appHighlight (click)="hideArchivedTasks()">Hide archived tasks</button>
             </div>
         </div>
     </div>

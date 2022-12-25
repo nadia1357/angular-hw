@@ -30,14 +30,14 @@
         <div *ngIf="createNewComment" class="form commentItem">
             <form class="addCommentForm" *ngIf="addCommentForm" [formGroup]="addCommentForm" (ngSubmit)="onSubmit()">
                 <input id="name" type="text" formControlName="name" placeholder="Comment name">
-                <button class="submitBtn" type="submit">Submit</button>
+                <button appHighlight class="submitBtn" type="submit">Submit</button>
             </form>
         </div>
 
         <div *ngIf="editCurrentComment" class="form commentItem">
             <form class="editCommentForm" *ngIf="editCommentForm" [formGroup]="editCommentForm" (ngSubmit)="onEdit()">
                 <input id="name" type="text" formControlName="name" placeholder="New comment name">
-                <button class="submitBtn" type="submit">Submit</button>
+                <button appHighlight class="submitBtn" type="submit">Submit</button>
             </form>
         </div>
 

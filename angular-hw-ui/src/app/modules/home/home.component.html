@@ -15,10 +15,10 @@
     </div>
 
     <div *ngIf="previousPassword" class="sbmBtn">
-        <button class="submitBtn" (click)="onSubmitLogin()">Login</button>
-        <button class="submitBtn" (click)="onSubmitRegister()">Register</button>
+        <button class="submitBtn" appHighlight (click)="onSubmitLogin()">Login</button>
+        <button class="submitBtn" appHighlight (click)="onSubmitRegister()">Register</button>
     </div>
 
-    <button *ngIf="previousPassword" class="forgetPasswordBtn" (click)="onSubmitForgetPassword()">Forget password</button>
-    <button *ngIf="setNewPassword" class="submitBtn" (click)="onSubmitSetNewPassword()">Set new password</button>
+    <button *ngIf="previousPassword" class="forgetPasswordBtn" appHighlight (click)="onSubmitForgetPassword()">Forget password</button>
+    <button *ngIf="setNewPassword" class="submitBtn" appHighlight (click)="onSubmitSetNewPassword()">Set new password</button>
 </form>

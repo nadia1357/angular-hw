@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule} from 'src/app/app-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { SharedModule } from '../../modules/shared/shared.module';
+import { FormatPipe} from 'src/app/core/pipes/format.pipe';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { SharedModule } from '../../modules/shared/shared.module';
     AppRoutingModule
   ],
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    FormatPipe
   ],
   exports: [
     DashboardComponent

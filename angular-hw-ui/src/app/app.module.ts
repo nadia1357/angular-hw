@@ -9,10 +9,12 @@ import { BoardModule } from './modules/board/board.module';
 import { TaskModule } from './modules/task/task.module';
 import { HomeModule } from './modules/home/home.module';
 import { TokenInterceptor } from './core/interceptors/http-interceptors/http.interceptor';
+import { HighlightDirective } from './core/directives/highlight.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
