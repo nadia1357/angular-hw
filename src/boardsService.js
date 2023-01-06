@@ -19,7 +19,7 @@ const authJWT = (auth) => {
 }
 
 const getBoards = async (req, res, next) => {
-  const selectedParams = req.params;
+  const selectedParams = req.query;
   const { authorization } = req.headers;
   const user = authJWT(authorization);
 
@@ -55,7 +55,7 @@ const getBoards = async (req, res, next) => {
 
         if (selectedParams.order) {
           if (selectedParams.order === 'DESC') {
-            result.reverse();
+            result = result.reverse();
           }
         }
 
@@ -76,8 +76,8 @@ const addNewBoard = async (req, res, next) => {
     userId: user.userId,
     name: newBoardInfo.name,
     description: newBoardInfo.description,
-    creationDate: newBoardInfo.creationDate,
-    created_at: newBoardInfo.created_at,
+    creationDate: new Date().toLocaleDateString(),
+    created_at: new Date(),
     numberOfTasks: 0
   });
 
@@ -86,11 +86,11 @@ const addNewBoard = async (req, res, next) => {
     .catch(err => next(err));
 }
 
-/*const getBoardById = async (req, res, next) => {
+const getBoardById = async (req, res, next) => {
   await Board.findById(req.params.id)
     .then(board => res.status(200).json({ 'board': board }))
     .catch(err => next(err));
-}*/
+}
 
 const editBoardById = async (req, res, next) => {
   const { authorization } = req.headers;
@@ -129,7 +129,7 @@ const deleteBoard = async (req, res, next) => {
 module.exports = {
   getBoards,
   addNewBoard,
-  //getBoardById,
+  getBoardById,
   editBoardById,
   deleteBoard
 };

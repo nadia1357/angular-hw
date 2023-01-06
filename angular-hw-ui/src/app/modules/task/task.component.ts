@@ -150,11 +150,11 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
 
   private refreshComments() {
-    this.tasksService.getTasks(this.selectedParams)
+    this.tasksService.getTaskById(this.selectedParams, this.taskId)
       .pipe(
         takeUntil(this.destroy$)
-      ).subscribe((tasks) => {
-        this.tasks = tasks;
+      ).subscribe((task) => {
+        this.comments = task.comments;
       });
   }
 }

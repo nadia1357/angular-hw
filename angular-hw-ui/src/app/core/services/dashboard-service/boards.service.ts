@@ -35,18 +35,18 @@ export class BoardsService {
     return this.http.post(this._BOARDS_URL, board);
   }
 
-  editBoardName(oldBoardId: string, newBoardName: string) {
+  editBoardName(oldBoardId: string, newBoardName: string): Observable<unknown> {
     const editURL: string = this._BOARDS_URL + '/' + oldBoardId;
     const newBoard: Partial<Board> = { name: newBoardName };
     return this.http.put(editURL, newBoard);
   }
 
-  deleteBoard(oldBoardId: string) {
+  deleteBoard(oldBoardId: string): Observable<unknown> {
     const deleteURL: string = this._BOARDS_URL + '/' + oldBoardId;
     return this.http.delete(deleteURL);
   }
 
-  updateNumberOfTasks(oldBoardId: string, newNumberOfTasks: number) {
+  updateNumberOfTasks(oldBoardId: string, newNumberOfTasks: number): Observable<unknown> {
     const editURL: string = this._BOARDS_URL + '/' + oldBoardId;
     const newBoard: Partial<Board> = { numberOfTasks: newNumberOfTasks };
     return this.http.put(editURL, newBoard);

@@ -5,6 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Board } from 'src/app/models/board';
 import { selectParams } from 'src/app/models/paramArrays';
 import { BoardsService } from 'src/app/core/services/dashboard-service/boards.service';
+import { ValidateDescription } from 'src/app/core/custom_validators/custom_validator';
 
 @Component({
   selector: 'app-dashboard',
@@ -42,13 +43,17 @@ export class DashboardComponent implements OnInit {
         Validators.required,
         Validators.minLength(3)
       ]],
-      description: ['', Validators.required],
+      description: ['', [
+        Validators.required,
+        Validators.minLength(5),
+        ValidateDescription()
+      ]]
     });
 
     this.editBoardForm = this.formBuilder.group({
       name: ['', [
         Validators.required,
-        Validators.minLength(3)
+        Validators.minLength(3),
       ]]
     });
   }

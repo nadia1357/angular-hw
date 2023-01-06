@@ -19,7 +19,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   toBoardPage: boolean = false;
 
   private routeSub!: Subscription;
-  public id: string = '';
+  public boardId: string = '';
 
   faTrashCan = faTrashCan;
   faComment = faComment;
@@ -75,7 +75,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.routeSub = this.route.params.subscribe(params => {
-      this.id = params['id']; // board's id
+      this.boardId = params['id']; // board's id
     });
   }
 
@@ -140,7 +140,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   onSubmit(column: string): void {
     let newTask: Partial<Task> = this.addTaskForm?.value;
-    newTask.created_at = new Date();
+    newTask.boardId = this.boardId;
     newTask.status = column;
     this.tasksService.addNewTask(newTask)
       .pipe(
@@ -149,7 +149,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         next: () => {
           this.refreshTasks();
           this.numberOfTasks = this.tasks.length;
-          this.boardsService.updateNumberOfTasks(this.id, this.numberOfTasks);
+          this.boardsService.updateNumberOfTasks(this.boardId, this.numberOfTasks);
         },
         error: () => alert('This task wasn`t created. Please try again')
       });
@@ -221,7 +221,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         next: () => {
           this.refreshTasks();
           this.numberOfTasks = this.tasks.length;
-          this.boardsService.updateNumberOfTasks(this.id, this.numberOfTasks);
+          this.boardsService.updateNumberOfTasks(this.boardId, this.numberOfTasks);
         },
         error: () => alert('The task wasn`t deleted. Please try again')
       });
@@ -247,7 +247,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   private refreshTasks(): any {
-    this.tasksService.getTasks(this.selectedParams)
+    this.tasksService.getTasks(this.selectedParams, this.boardId)
       .pipe(
         takeUntil(this.destroy$)
       ).subscribe((tasks) => {

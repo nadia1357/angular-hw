@@ -1,5 +1,5 @@
 const { Task } = require('./models/Tasks.js');
-const { Board } = require('./models/Tasks.js');
+const { Board } = require('./models/Boards.js');
 const jwt = require('jsonwebtoken');
 
 const authJWT = (auth) => {
@@ -21,11 +21,11 @@ const authJWT = (auth) => {
 
 const getTasks = async (req, res, next) => {
   const selectedParams = {
-    name: req.params.name,
-    sort: req.params.sort,
-    order: req.params.order
+    name: req.query.name,
+    sort: req.query.sort,
+    order: req.query.order
   };
-  const boardId = req.params.boardId;
+  const boardId = req.query.boardId;
   const { authorization } = req.headers;
   const user = authJWT(authorization);
 
@@ -58,7 +58,7 @@ const getTasks = async (req, res, next) => {
 
         if (selectedParams.order) {
           if (selectedParams.order === 'DESC') {
-            result.reverse();
+            result = result.reverse();
           }
         }
 
@@ -75,14 +75,15 @@ const addNewTask = async (req, res, next) => {
   const { authorization } = req.headers;
   const user = authJWT(authorization);
   const currentDate = new Date().toString();
-  const board = await Board.find({ userId: user.userId });
+  const board = await Board.find({ userId: user.userId, _id: newTaskInfo.boardId });
   if (board) {
     const task = new Task({
       userId: user.userId,
-      boardId: board._id,
+      boardId: newTaskInfo.boardId,
       name: newTaskInfo.name,
       creationDate: currentDate
     });
+    
     await task.save()
       .then((saved) => res.status(200).json({ 'message': 'Task created successfully' }))
       .catch(err => next(err));
@@ -93,141 +94,127 @@ const addNewTask = async (req, res, next) => {
 
 const getTaskById = async (req, res, next) => {
   const selectedParams = {
-    name: req.params.name,
-    sort: req.params.sort,
-    order: req.params.order
+    name: req.query.name,
+    sort: req.query.sort,
+    order: req.query.order
   };
-  const { authorization } = req.headers;
-  const user = authJWT(authorization);
-  const board = await Board.find({ userId: user.userId });
-  if (board) {
-    await Task.findById(req.params.id)
-      .then(task => {
-        const comments = task.comments;
-        if (selectedParams) {
-          if (selectedParams.name) {
-            let commentNameInput = selectedParams.name.toLowerCase();
-            comments = comments.filter(
-              x => x.name.toLowerCase().includes(commentNameInput)
-            )
-          }
 
-          if (selectedParams.sort) {
-            switch (selectedParams.sort) {
-              case 'Name':
-                comments.sort((a, b) => {
-                  let nameA = a.name.toLowerCase();
-                  let nameB = b.name.toLowerCase();
-                  if (nameA < nameB) return -1;
-                  if (nameA > nameB) return 1;
-                  return 0;
-                })
-                break;
-              case 'Date':
-                comments = task.comments;
-                break;
-            }
-          }
+  let task = await Task.findOne({ _id: req.params.id });
+  if (task.comments) {
+    let comments = task.comments;
+    console.log(comments);
+    if (selectedParams) {
+      if (selectedParams.name) {
+        let commentNameInput = selectedParams.name.toLowerCase();
+        comments = comments.filter(
+          x => x.toLowerCase().includes(commentNameInput)
+        )
+      }
 
-          if (selectedParams.order) {
-            if (selectedParams.order === 'DESC') {
-              comments.reverse();
-            }
-          }
-          task.comments = comments;
-          res.status(200).json({ 'task': task })
+      if (selectedParams.sort) {
+        switch (selectedParams.sort) {
+          case 'Name':
+            comments.sort((a, b) => {
+              let nameA = a.toLowerCase();
+              let nameB = b.toLowerCase();
+              if (nameA < nameB) return -1;
+              if (nameA > nameB) return 1;
+              return 0;
+            })
+            break;
+          case 'Date':
+            comments = task.comments;
+            break;
         }
-      })
-      .catch(err => next(err));
-  } else {
-    return res.status(400).json({ message: 'Board not found' });
+      }
+
+      if (selectedParams.order) {
+        if (selectedParams.order === 'DESC') {
+          comments = comments.reverse();
+        }
+      }
+      task.comments = comments;
+      res.status(200).json({ 'task': task })
+    }
   }
 }
 
 const editTaskById = async (req, res, next) => {
-  const { authorization } = req.headers;
-  const user = authJWT(authorization);
   const task = req.body.payload;
-  const board = await Board.find({ userId: user.userId });
 
-  if (board) {
-    if (task.name) {
-      await Task.findByIdAndUpdate({ _id: req.params.id, boardId: board._id }, {
-        $set: { name: task.name }
+  if (task.name) {
+    await Task.findByIdAndUpdate({ _id: req.params.id }, {
+      $set: { name: task.name }
+    })
+      .then((task) => {
+        task.save()
+          .then(saved => res.status(200).json({ 'message': 'Task name changed successfully' }))
+          .catch(err => next(err));
+      })
+  }
+
+  if (task.comments) {
+    if (task.comments[0] === 'new comment') {
+      let currentTask = await Task.findOne({ _id: req.params.id });
+      if (currentTask.comments === undefined) {
+        currentTask.comments = [];
+      }
+      currentTask.comments.push(task.comments[1]);
+
+      await Task.findByIdAndUpdate({ _id: req.params.id }, {
+        $set: { comments: currentTask.comments }
       })
         .then((task) => {
           task.save()
-            .then(saved => res.status(200).json({ 'message': 'Task name changed successfully' }))
+            .then(saved => res.status(200).json({ 'message': 'New comment added' }))
             .catch(err => next(err));
         })
     }
 
-    if (task.comments) {
-      if (task.comments[0] === 'new comment') {
-        await Task.findByIdAndUpdate({ _id: req.params.id, boardId: board._id }, {
-          $set: { comments: comments.push(task.comments[1]) }
-        })
-          .then((task) => {
-            task.save()
-              .then(saved => res.status(200).json({ 'message': 'New comment added' }))
-              .catch(err => next(err));
-          })
+    if (task.comments[0] === 'comment to change') {
+      let currentTask = await Task.findOne({ _id: req.params.id });
+      if (currentTask.comments) {
+        currentTask.comments.forEach((el, index) => {
+          if (el === task.comments[1]) {
+            currentTask.comments[index] = task.comments[2];
+          }
+        });
+      } else {
+        currentTask.comments = [];
       }
 
-      if (task.comments[0] === 'comment to change') {
-        let currentTask = await Task.find({ _id: req.params.id });
-        if (currentTask.comments) {
-          currentTask.comments.forEach((el, index) => {
-            if (el === task.comments[1]) {
-              currentTask.comments[index] = task.comments[2];
-            }
-          });
-        } else {
-          currentTask.comments = [];
-        }
-      
-        await Task.findByIdAndUpdate({ _id: req.params.id, boardId: board._id }, {
-          $set: { comments: currentTask.comments }
+      await Task.findByIdAndUpdate({ _id: req.params.id }, {
+        $set: { comments: currentTask.comments }
+      })
+        .then((task) => {
+          task.save()
+            .then(saved => res.status(200).json({ 'message': 'Comment changed' }))
+            .catch(err => next(err));
         })
-          .then((task) => {
-            task.save()
-              .then(saved => res.status(200).json({ 'message': 'Comment changed' }))
-              .catch(err => next(err));
-          })
-      }
-
-      if (task.comments[0] === 'comment to delete') {
-        let currentTask = await Task.find({ _id: req.params.id });
-        if (currentTask.comments) {
-              let deleteIndex = currentTask.comments.findIndex(el => el === task.comments[1]);
-              currentTask.comments.splice(deleteIndex, 1);
-        } 
-        await Task.findByIdAndUpdate({ _id: req.params.id, boardId: board._id }, {
-          $set: { comments: currentTask.comments }
-        })
-          .then((task) => {
-            task.save()
-              .then(saved => res.status(200).json({ 'message': 'Comment deleted' }))
-              .catch(err => next(err));
-          })
-      }
     }
-  } else {
-    return res.status(400).json({ message: 'Board not found' });
+
+    if (task.comments[0] === 'comment to delete') {
+      let currentTask = await Task.find({ _id: req.params.id });
+      if (currentTask.comments) {
+        let deleteIndex = currentTask.comments.findIndex(el => el === task.comments[1]);
+        currentTask.comments.splice(deleteIndex, 1);
+      }
+      await Task.findByIdAndUpdate({ _id: req.params.id }, {
+        $set: { comments: currentTask.comments }
+      })
+        .then((task) => {
+          task.save()
+            .then(saved => res.status(200).json({ 'message': 'Comment deleted' }))
+            .catch(err => next(err));
+        })
+    }
   }
 }
 
 const deleteTask = async (req, res, next) => {
-  const { authorization } = req.headers;
-  const user = authJWT(authorization);
-  const board = await Board.find({ userId: user.userId });
-  if (board) {
-    await Task.findByIdAndDelete(req.params.id)
-      .then(task => res.status(200).json({ 'message': 'Task deleted successfully' }))
-      .catch(err => next(err));
-  } else {
-    return res.status(400).json({ message: 'Board not found' });
-  }
+  await Task.findByIdAndDelete(req.params.id)
+    .then(task => res.status(200).json({ 'message': 'Task deleted successfully' }))
+    .catch(err => next(err));
 }
 
 module.exports = {
