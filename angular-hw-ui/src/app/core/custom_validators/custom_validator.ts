@@ -7,8 +7,8 @@ export function ValidateDescription(): ValidatorFn {
 
     const hasUpperCase = /[A-Z]+/.test(value);
     const hasLowerCase = /[a-z]+/.test(value);
-    const hasNoNumeric = !(/[0-9]+/.test(value)); // description shouldn't contain numerics
-    const descriptionValid = hasUpperCase && hasLowerCase && hasNoNumeric;
+    const hasNumeric = (/[0-9]+/.test(value)); 
+    const descriptionValid = hasUpperCase && hasLowerCase && hasNumeric;
 
     return !descriptionValid ? { descriptionValid: true } : null;
   }

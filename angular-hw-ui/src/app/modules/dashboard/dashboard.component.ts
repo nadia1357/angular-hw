@@ -3,7 +3,7 @@ import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { Board } from 'src/app/models/board';
-import { selectParams } from 'src/app/models/paramArrays';
+import { SelectParams } from 'src/app/models/paramArrays';
 import { BoardsService } from 'src/app/core/services/dashboard-service/boards.service';
 import { ValidateDescription } from 'src/app/core/custom_validators/custom_validator';
 
@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
   boards: Board[] = [];
   currentBoardId: string = ''; 
   oldBoardId: string = '';
-  selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
+  selectedParams: SelectParams = { name: '', sort: 'Date', order: 'ASC' };
 
   createNewBoard: boolean = false;
   addBoardForm?: FormGroup;
@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
       description: ['', [
         Validators.required,
         Validators.minLength(5),
-        ValidateDescription()
+        ValidateDescription()// custom validation
       ]]
     });
 
@@ -119,8 +119,9 @@ export class DashboardComponent implements OnInit {
     this.currentBoardId = board._id;
   }
 
-  changeSortingParams(selectedParams: selectParams) {
+  changeSortingParams(selectedParams: SelectParams) {
     this.selectedParams = selectedParams;
+    this.refreshBoards();
   }
 
   private refreshBoards(): any {

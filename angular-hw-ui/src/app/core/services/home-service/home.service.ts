@@ -36,7 +36,6 @@ export class HomeService {
       .pipe(
         tap(({ jwt_token: token }) => {
           if ({ jwt_token: token }) {
-            console.log(token);
             this.setUserTokenToStorage(token);
             this.router.navigate(['dashboard']);
           } else {

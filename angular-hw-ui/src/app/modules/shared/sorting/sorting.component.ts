@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { sortParams, orderParams, selectParams } from 'src/app/models/paramArrays';
+import { sortParams, orderParams, SelectParams } from 'src/app/models/paramArrays';
 
 @Component({
   selector: 'app-sorting',
@@ -10,10 +10,10 @@ import { sortParams, orderParams, selectParams } from 'src/app/models/paramArray
 export class SortingComponent {
   sortParams = sortParams;
   orderParams = orderParams;
-  selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
+  selectedParams: SelectParams = { name: '', sort: 'Date', order: 'ASC' };
   paramType: string = '';
 
-  @Output() newSortingEvent = new EventEmitter<selectParams>();
+  @Output() newSortingEvent = new EventEmitter<SelectParams>();
 
   addNewParam(value: string, paramType: string) {
     switch (paramType) {

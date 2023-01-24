@@ -5,7 +5,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faTrashCan, faComment, faPenToSquare, faBoxArchive } from '@fortawesome/free-solid-svg-icons';
 import { Task } from 'src/app/models/task';
-import { selectParams, colors } from 'src/app/models/paramArrays';
+import { SelectParams, colors } from 'src/app/models/paramArrays';
 import { BoardsService } from 'src/app/core/services/dashboard-service/boards.service';
 import { TasksService } from 'src/app/core/services/board-service/tasks.service';
 
@@ -44,7 +44,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   taskId: string = '';
   taskToComment: string = '';
   searchedTaskName: string = '';
-  selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
+  selectedParams: SelectParams = { name: '', sort: 'Date', order: 'ASC' };
 
   name: string = '';
   sort: string = 'Date';
@@ -179,7 +179,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   onEdit(): void {
-    let newTask: Partial<Task> = this.editTaskForm?.value.name;
+    let newTask: Partial<Task> = { name: this.editTaskForm?.value.name };
+    console.log(newTask);
     this.tasksService.editTask(this.taskId, newTask)
       .pipe(
         takeUntil(this.destroy$)
@@ -242,8 +243,9 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.showArchivedTasks = false;
   }
 
-  changeSortingParams(selectedParams: selectParams) {
+  changeSortingParams(selectedParams: SelectParams) {
     this.selectedParams = selectedParams;
+    this.refreshTasks();
   }
 
   private refreshTasks(): any {

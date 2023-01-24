@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Board } from 'src/app/models/board';
-import { selectParams } from 'src/app/models/paramArrays';
+import { SelectParams } from 'src/app/models/paramArrays';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +17,18 @@ export class BoardsService {
     private router: Router
   ) { }
 
-  getBoards(selectedParams: selectParams): Observable<Board[]> {
-    return this.http.get<Board[]>(this._BOARDS_URL, {
+  getBoards(selectedParams: SelectParams): Observable<Board[]> {
+    return this.http.get<{boards: Board[]}>(this._BOARDS_URL, {
       params: new HttpParams()
         .set('name', selectedParams.name)
         .set('sort', selectedParams.sort)
         .set('order', selectedParams.order)
-    });
+    })
+    .pipe(
+      map((result) => {
+        return result.boards;
+        })
+    );
   }
 
   getBoardByName(boardId: string) {

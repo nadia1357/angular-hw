@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faTrashCan, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Task } from 'src/app/models/task';
-import { selectParams, colors } from 'src/app/models/paramArrays';
+import { SelectParams, colors } from 'src/app/models/paramArrays';
 import { TasksService } from 'src/app/core/services/board-service/tasks.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class TaskComponent implements OnInit, OnDestroy {
   public currentCommentColor: string = 'red-violet-crayola';
 
   oldComment: string = '';
-  selectedParams: selectParams = { name: '', sort: 'Date', order: 'ASC' };
+  selectedParams: SelectParams = { name: '', sort: 'Date', order: 'ASC' };
 
   createNewComment: boolean = false;
   addCommentForm?: FormGroup;
@@ -145,7 +145,7 @@ export class TaskComponent implements OnInit, OnDestroy {
       });
   }
 
-  changeSortingParams(selectedParams: selectParams) {
+  changeSortingParams(selectedParams: SelectParams) {
     this.selectedParams = selectedParams;
   }
 
@@ -153,8 +153,10 @@ export class TaskComponent implements OnInit, OnDestroy {
     this.tasksService.getTaskById(this.selectedParams, this.taskId)
       .pipe(
         takeUntil(this.destroy$)
-      ).subscribe((task) => {
-        this.comments = task.comments;
+      ).subscribe((result) => {
+        this.comments = result.task.comments;
+        console.log(result.task);
+        console.log(result.task.comments);
       });
   }
 }

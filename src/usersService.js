@@ -3,23 +3,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 //const passfather = require('passfather'); // for changing password by sending a link to user's email
 
-const authJWT = (auth) => {
-  if (!auth) {
-    return res.status(400).json({ 'message': 'Please, provide authorization header' });
-  }
-  const [, token] = auth.split(' ');
-  if (!token) {
-    return res.status(400).json({ 'message': 'Please, include token to request' });
-  }
-
-  try {
-    const tokenPayload = jwt.verify(token, 'secret-jwt-key');
-    return tokenPayload;
-  } catch (err) {
-    return res.status(400).json({ 'message': 'Wrong JWT' });
-  }
-}
-
 const createProfile = async (req, res, next) => {
   const { email, password } = req.body;
   const registeredUser = await User.findOne({ email: email });
@@ -33,23 +16,25 @@ const createProfile = async (req, res, next) => {
 
   if (!email) {
     return res.status(400).json({ 'message': 'Wrong email' });
-  } else if (!password) {
+  } 
+  if (!password) {
     return res.status(400).json({ 'message': 'Wrong password' });
-  } else if (registeredUser) {
+  } 
+  if (registeredUser) {
     return res.status(400).json({ 'message': 'This user is already registered' });
   } else {
     await user.save()
-      .then(saved => res.status(200).json({ 'message': `Profile created successfully` }))
+      .then(saved => res.status(200).json({ 'message': 'Profile created successfully' }))
       .catch(err => next(err));
-  };
+  }
 }
 
 const login = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (user && await bcrypt.compare(String(req.body.password), String(user.password))) {
-    const payload = { email: user.email, password: user.password, userId: user._id };
-    const jwtToken = jwt.sign(payload, 'secret-jwt-key');
-    return res.status(200).json({ jwt_token: jwtToken, 'message': 'User is authorized' });
+    const payload = { _id: user._id };
+    const jwt_token = jwt.sign(payload, 'secret-jwt-key');
+    return res.status(200).json({ jwt_token: jwt_token, 'message': 'User is authorized' });
   } else {
     return res.status(400).json({ 'message': 'Not authorized' });
   }
@@ -57,30 +42,23 @@ const login = async (req, res, next) => {
 
 const forgotPassword = async (req, res, next) => {
   const thisUser = await User.findOne({ email: req.body.email });
-  const { authorization } = req.headers;
-  const user = authJWT(authorization);
+  if (!thisUser) {
+    return res.status(400).json({ 'message': 'User is not authorized' });
+  }
   //const newPassword = passfather();
   const newPassword = req.body.password;
-
-  if (user.email === thisUser.email) {
-    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-    await User.findOneAndUpdate({ email: req.body.email }, { $set: { password: hashedNewPassword} })
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+  await User.findOneAndUpdate({ email: req.body.email }, { $set: { password: hashedNewPassword } })
     .then(result => {
-      const payload = { email: user.email, password: hashedNewPassword, userId: user._id };
-      const jwtToken = jwt.sign(payload, 'secret-jwt-key');
-      return res.status(200).json({ jwt_token: jwtToken, 'message': 'Password changed successfully' });
+      const payload = { _id: result._id };
+      const jwt_token = jwt.sign(payload, 'secret-jwt-key');
+      return res.status(200).json({ jwt_token: jwt_token, 'message': 'Password changed successfully' });
     })
-  } else {
-    return res.status(400).json({ 'message': 'Not authorized' });
-  }
 }
 
 //this function isn't used now, but could be used with updating the app in future
 const deleteProfile = async (req, res, next) => {
-  const { authorization } = req.headers;
-  const user = authJWT(authorization);
-
-  await User.findOneAndDelete({ email: user.email })
+  await User.findOneAndDelete({ _id: req.user._id })
     .then(profile => {
       return res.status(200).json({ 'message': 'Profile deleted successfully' });
     })

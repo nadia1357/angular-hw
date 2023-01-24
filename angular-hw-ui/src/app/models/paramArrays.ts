@@ -1,7 +1,7 @@
 export const sortParams = ['Name', 'Date', 'Number of Tasks'];
 export const orderParams = ['ASC', 'DESC'];
 
-export interface selectParams {
+export interface SelectParams {
     name: string,
     sort: string,
     order: string

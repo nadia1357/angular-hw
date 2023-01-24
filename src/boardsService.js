@@ -1,29 +1,9 @@
 const { Board } = require('./models/Boards.js');
-const jwt = require('jsonwebtoken');
-
-const authJWT = (auth) => {
-  if (!auth) {
-    return res.status(401).json({ 'message': 'Please, provide authorization header' });
-  }
-  const [, token] = auth.split(' ');
-  if (!token) {
-    return res.status(401).json({ 'message': 'Please, include token to request' });
-  }
-
-  try {
-    const tokenPayload = jwt.verify(token, 'secret-jwt-key');
-    return tokenPayload;
-  } catch (err) {
-    return res.status(401).json({ message: err.message });
-  }
-}
 
 const getBoards = async (req, res, next) => {
   const selectedParams = req.query;
-  const { authorization } = req.headers;
-  const user = authJWT(authorization);
 
-  await Board.find({ userId: user.userId })
+  await Board.find({ userId: req.user._id })
     .then((result) => {
       if (selectedParams) {
         if (selectedParams.name) {
@@ -68,14 +48,10 @@ const getBoards = async (req, res, next) => {
 }
 
 const addNewBoard = async (req, res, next) => {
-  const newBoardInfo = req.body.payload;
-  const { authorization } = req.headers;
-  const user = authJWT(authorization);
-
   const board = new Board({
-    userId: user.userId,
-    name: newBoardInfo.name,
-    description: newBoardInfo.description,
+    userId: req.user._id,
+    name: req.body.name,
+    description: req.body.description,
     creationDate: new Date().toLocaleDateString(),
     created_at: new Date(),
     numberOfTasks: 0
@@ -93,13 +69,9 @@ const getBoardById = async (req, res, next) => {
 }
 
 const editBoardById = async (req, res, next) => {
-  const { authorization } = req.headers;
-  const user = authJWT(authorization);
-  const board = req.body.payload;
-
-  if (board.name) {
-    await Board.findByIdAndUpdate({ _id: req.params.id, userId: user.id }, {
-      $set: { name: board.name }
+  if (req.body.name) {
+    await Board.findByIdAndUpdate({ _id: req.params.id, userId: req.user._id }, {
+      $set: { name: req.body.name }
     })
       .then((board) => {
         board.save()
@@ -108,9 +80,9 @@ const editBoardById = async (req, res, next) => {
       })
   }
 
-  if (board.numberOfTasks) {
-    await Board.findByIdAndUpdate({ _id: req.params.id, userId: user.id }, {
-      $set: { numberOfTasks: board.numberOfTasks }
+  if (req.body.numberOfTasks) {
+    await Board.findByIdAndUpdate({ _id: req.params.id, userId: req.user._id }, {
+      $set: { numberOfTasks: req.body.numberOfTasks }
     })
       .then((board) => {
         board.save()

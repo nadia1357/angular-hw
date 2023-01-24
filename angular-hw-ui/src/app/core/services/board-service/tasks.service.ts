@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Task } from 'src/app/models/task';
-import { selectParams } from 'src/app/models/paramArrays';
+import { SelectParams } from 'src/app/models/paramArrays';
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +14,24 @@ export class TasksService {
 
   constructor(private http: HttpClient) { }
 
-  getTasks(selectedParams: selectParams, boardId: string): Observable<Task[]> {
-    return this.http.get<Task[]>(this._TASKS_URL, {
+  getTasks(selectedParams: SelectParams, boardId: string): Observable<Task[]> {
+    return this.http.get<{ tasks: Task[] }>(this._TASKS_URL, {
       params: new HttpParams()
         .set('boardId', boardId)
         .set('name', selectedParams.name)
         .set('sort', selectedParams.sort)
         .set('order', selectedParams.order)
-    });
+    })
+      .pipe(
+        map((result) => {
+          return result.tasks;
+        })
+      );
   }
 
-  getTaskById(selectedParams: selectParams, taskId: string): Observable<Task> {
+  getTaskById(selectedParams: SelectParams, taskId: string): Observable<{ task: Task }> {
     const getTaskURL = this._TASKS_URL + '/' + taskId;
-    return this.http.get<Task>(getTaskURL, {
+    return this.http.get<{ task: Task }>(getTaskURL, {
       params: new HttpParams()
         .set('name', selectedParams.name)
         .set('sort', selectedParams.sort)
