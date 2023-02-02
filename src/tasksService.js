@@ -143,6 +143,7 @@ const editTaskById = async (req, res, next) => {
   }
 
   if (task.comments) {
+    console.log(task.comments);
     if (task.comments[0] === 'new comment') {
       let currentTask = await Task.findOne({ _id: req.params.id });
       if (currentTask.comments === undefined) {
@@ -183,10 +184,12 @@ const editTaskById = async (req, res, next) => {
     }
 
     if (task.comments[0] === 'comment to delete') {
-      let currentTask = await Task.find({ _id: req.params.id });
+      let currentTask = await Task.findOne({ _id: req.params.id });
       if (currentTask.comments) {
+        console.log(currentTask.comments);
         let deleteIndex = currentTask.comments.findIndex(el => el === task.comments[1]);
         currentTask.comments.splice(deleteIndex, 1);
+        console.log(currentTask.comments);
       }
       await Task.findByIdAndUpdate({ _id: req.params.id }, {
         $set: { comments: currentTask.comments }

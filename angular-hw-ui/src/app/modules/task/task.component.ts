@@ -155,8 +155,6 @@ export class TaskComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe((result) => {
         this.comments = result.task.comments;
-        console.log(result.task);
-        console.log(result.task.comments);
       });
   }
 }
