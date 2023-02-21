@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faTrashCan, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+
 import { Task } from 'src/app/models/task';
 import { SelectParams, colors } from 'src/app/models/paramArrays';
 import { TasksService } from 'src/app/core/services/board-service/tasks.service';
@@ -13,9 +14,8 @@ import { TasksService } from 'src/app/core/services/board-service/tasks.service'
   styleUrls: ['./task.component.scss']
 })
 export class TaskComponent implements OnInit, OnDestroy {
-  toDashboardPage: boolean = true;
-  toBoardPage: boolean = true;
-
+  logOut: boolean = true;
+  
   private routeSub!: Subscription;
   public taskId: string = '';
 

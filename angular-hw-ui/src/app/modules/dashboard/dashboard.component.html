@@ -1,14 +1,14 @@
+<app-header></app-header>
+
 <div class="upper">
     <div>
         <h1>Dashboard</h1>
     </div>
     <div>
-        <app-navigation [toDashboardPage]="toDashboardPage" [toBoardPage]="toBoardPage"></app-navigation>
-    </div>
-    <div>
         <app-sorting (newSortingEvent)="changeSortingParams($event)"></app-sorting>
     </div>
 </div>
+
 <div class="boards">
     <div class="add-board">
         <button (click)="addNewBoard()">
@@ -54,3 +54,5 @@
         <button class="button" type="submit">Submit</button>
     </form>
 </div>
+
+<app-footer></app-footer>

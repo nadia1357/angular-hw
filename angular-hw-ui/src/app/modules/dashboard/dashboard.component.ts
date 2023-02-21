@@ -13,8 +13,7 @@ import { ValidateDescription } from 'src/app/core/custom_validators/custom_valid
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  toDashboardPage: boolean = false;
-  toBoardPage: boolean = false;
+  logOut: boolean = true;
 
   public title = 'board';
   boards: Board[] = [];

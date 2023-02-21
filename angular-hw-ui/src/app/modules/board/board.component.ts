@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faTrashCan, faComment, faPenToSquare, faBoxArchive } from '@fortawesome/free-solid-svg-icons';
+
 import { Task } from 'src/app/models/task';
 import { SelectParams, colors } from 'src/app/models/paramArrays';
 import { BoardsService } from 'src/app/core/services/dashboard-service/boards.service';
@@ -15,9 +16,8 @@ import { TasksService } from 'src/app/core/services/board-service/tasks.service'
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit, OnDestroy {
-  toDashboardPage: boolean = true;
-  toBoardPage: boolean = false;
-
+  logOut: boolean = true;
+  
   private routeSub!: Subscription;
   public boardId: string = '';
 

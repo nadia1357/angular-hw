@@ -1,0 +1,21 @@
+<app-header [logOut]="logOut"></app-header>
+
+<form ngForm class="loginForm">
+    <div class="input">
+        <label for="email">Email</label>
+        <input type="text" [(ngModel)]="email" id="email" required name="email">
+        <p class="small">This field is required</p>
+    </div>
+
+    <div class="input">
+        <label for="password">Password</label>
+        <input type="password" [(ngModel)]="password" id="password" required name="password">
+        <p class="small">This field is required</p>
+        <a class="small" [routerLink]="['/password/new']">Forgot your password?</a>
+    </div>
+
+    <button class="submitBtn" appHighlight (click)="onSubmitLogin()">Login</button>
+    <a class="small" [routerLink]="['/sign_up']">Don`t have any account yet? Register now</a>
+</form>
+
+<app-footer></app-footer>

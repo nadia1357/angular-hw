@@ -6,17 +6,17 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HomeService } from 'src/app/core/services/home-service/home.service';
+import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
   constructor(
-    private homeService: HomeService
+    private authService: AuthService
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const token: string | null = this.homeService.getUserTokenFromStorage();
+    const token: string | null = this.authService.getUserTokenFromStorage();
     if (token) {
       const headerReq = request.clone({
         headers: request.headers.set(

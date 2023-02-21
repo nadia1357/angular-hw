@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HomeService {
+export class AuthService {
   private _URL = 'http://localhost:8080/api/auth';
   private _LOGIN_URL = `${this._URL}/login`;
   private _REGISTER_URL = `${this._URL}/register`;

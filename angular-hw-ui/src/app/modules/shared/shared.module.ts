@@ -3,12 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule} from 'src/app/app-routing.module';
 import { SortingComponent } from './sorting/sorting.component';
-import { NavigationComponent } from './navigation/navigation.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     SortingComponent,
-    NavigationComponent, 
+    HeaderComponent,
+    FooterComponent, 
   ],
   imports: [
     CommonModule, 
@@ -17,7 +19,8 @@ import { NavigationComponent } from './navigation/navigation.component';
   ],
   exports: [
     SortingComponent,
-    NavigationComponent
+    HeaderComponent,
+    FooterComponent
   ]
 })
 export class SharedModule { }

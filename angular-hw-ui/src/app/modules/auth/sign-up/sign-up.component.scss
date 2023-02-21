@@ -1,0 +1,40 @@
+.signUpForm {
+    font-family: Arial;
+    width: 300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    background-color: #e5a9a9;
+    padding: 20px 10px;
+    border: 2px solid darkslategray;
+    border-radius: 3px;
+    top: 200px;
+    margin-bottom: 20px;
+
+    .input {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            height: 1.5rem;
+        }
+    }
+
+    .submitBtn {
+        height: 2.5rem;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .small {
+        font-size: 0.8rem;
+    }
+}

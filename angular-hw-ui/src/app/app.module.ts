@@ -4,17 +4,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { BoardModule } from './modules/board/board.module';
 import { TaskModule } from './modules/task/task.module';
-import { HomeModule } from './modules/home/home.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { TokenInterceptor } from './core/interceptors/http-interceptors/http.interceptor';
 import { HighlightDirective } from './core/directives/highlight.directive';
+import { PageNotFoundComponent } from './core/pages/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HighlightDirective
+    HighlightDirective,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +25,7 @@ import { HighlightDirective } from './core/directives/highlight.directive';
     DashboardModule,
     BoardModule,
     TaskModule,
-    HomeModule,
+    AuthModule,
     HttpClientModule,
     DragDropModule
   ],

@@ -1,0 +1,19 @@
+<app-header [logOut]="logOut"></app-header>
+
+<form ngForm class="signUpForm">
+    <div class="input">
+        <label for="email">Email</label>
+        <input type="text" [(ngModel)]="email" id="email" required name="email">
+        <p class="small">This field is required</p>
+    </div>
+
+    <div class="input">
+        <label for="password">Password</label>
+        <input type="password" [(ngModel)]="password" id="password" required name="password">
+        <p class="small">This field is required</p>
+    </div>
+
+    <button class="submitBtn" appHighlight (click)="onSubmitRegister()">Register</button>
+</form>
+
+<app-footer></app-footer>
