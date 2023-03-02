@@ -1,7 +1,7 @@
 .loginForm {
     font-family: Arial;
     width: 300px;
-    margin: 0 auto;
+    margin: 30px auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -10,8 +10,6 @@
     padding: 20px 10px;
     border: 2px solid darkslategray;
     border-radius: 3px;
-    top: 200px;
-    margin-bottom: 20px;
 
     .input {
         margin-bottom: 10px;

@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+
 import { Board } from 'src/app/models/board';
 import { SelectParams } from 'src/app/models/paramArrays';
 import { BoardsService } from 'src/app/core/services/dashboard-service/boards.service';
+import { StateService } from 'src/app/core/services/state-service/state.service';
 import { ValidateDescription } from 'src/app/core/custom_validators/custom_validator';
 
 @Component({
@@ -14,10 +16,14 @@ import { ValidateDescription } from 'src/app/core/custom_validators/custom_valid
 })
 export class DashboardComponent implements OnInit {
   logOut: boolean = true;
+  numberOfBoards: boolean = true;
+
+  currentBoardsCount: number = 0;
+  subscriptionBoardsCounter: any;
 
   public title = 'board';
   boards: Board[] = [];
-  currentBoardId: string = ''; 
+  currentBoardId: string = '';
   oldBoardId: string = '';
   selectedParams: SelectParams = { name: '', sort: 'Date', order: 'ASC' };
 
@@ -31,10 +37,15 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private boardsService: BoardsService,
+    private stateService: StateService,
     private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
+    this.subscriptionBoardsCounter = this.stateService.getBoardsCount().subscribe(
+      res => this.currentBoardsCount = res.value
+    );
+
     this.refreshBoards();
 
     this.addBoardForm = this.formBuilder.group({
@@ -60,6 +71,7 @@ export class DashboardComponent implements OnInit {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.subscriptionBoardsCounter.unsubscribe();
   }
 
   onSubmit(): void {
@@ -127,6 +139,9 @@ export class DashboardComponent implements OnInit {
     this.boardsService.getBoards(this.selectedParams)
       .pipe(
         takeUntil(this.destroy$)
-      ).subscribe((boards) => this.boards = boards);
+      ).subscribe((boards) => {
+        this.boards = boards;
+        this.stateService.setBoardsCount(boards.length);
+      });
   }
 }

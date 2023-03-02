@@ -1,5 +1,6 @@
 :host {
     font-family: Arial;
+    margin-top: 0;
 }
 
 .red-violet-crayola {
@@ -26,14 +27,6 @@
 
     h1 {
         margin-left: 20px;
-    }
-
-    .upperNav {
-        width: 55%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
     }
 }
 
@@ -99,12 +92,12 @@ div.allTaskComments {
 
             .toBoardBtn {
                 width: 100%;
-                background-color: lightgray;
+                background-color: whitesmoke;
             } 
             
             .toDashboardBtn {
                 width: 100%;
-                background-color: gray;
+                background-color: lightgray;
             }
 
         }

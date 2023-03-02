@@ -15,9 +15,11 @@ import { TasksService } from 'src/app/core/services/board-service/tasks.service'
 })
 export class TaskComponent implements OnInit, OnDestroy {
   logOut: boolean = true;
+  numberOfBoards: boolean = true;
   
   private routeSub!: Subscription;
   public taskId: string = '';
+  public boardId: string = '';
 
   faTrashCan = faTrashCan;
   faPenToSquare = faPenToSquare;
@@ -155,6 +157,7 @@ export class TaskComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe((result) => {
         this.comments = result.task.comments;
+        this.boardId = result.task.boardId;
       });
   }
 }

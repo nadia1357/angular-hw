@@ -37,7 +37,7 @@ export class AuthService {
         tap(({ jwt_token: token }) => {
           if ({ jwt_token: token }) {
             this.setUserTokenToStorage(token);
-            this.router.navigate(['dashboard']);
+            this.router.navigate(['/dashboard']);
           } else {
             alert('You should register');
           }

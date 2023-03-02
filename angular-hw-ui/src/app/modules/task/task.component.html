@@ -1,10 +1,11 @@
-<app-header></app-header>
+<app-header [logOut]="logOut" [numberOfBoards]="numberOfBoards"></app-header>
 
 <div class="upper">
     <div>
         <h1>Task</h1>
     </div>
-    <div class="upperNav">
+
+    <div>
         <app-sorting (newSortingEvent)="changeSortingParams($event)"></app-sorting>
     </div>
 </div>
@@ -51,13 +52,13 @@
         </div>
 
         <div class="toBoard commentItem">
-            <button class="toBoardBtn" [routerLink]="['/board']">
+            <button class="toBoardBtn" [routerLink]="['/board', boardId]">
                 <p>Back to Board</p>
             </button>
         </div>
 
-        <div class="toDashBoard commentItem">
-            <button class="toDashBoardBtn" [routerLink]="['/dashboard']">
+        <div class="toDashboard commentItem">
+            <button class="toDashboardBtn" [routerLink]="['/dashboard']">
                 <p>Back to Dashboard</p>
             </button>
         </div>

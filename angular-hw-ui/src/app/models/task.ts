@@ -1,6 +1,6 @@
 export interface Task {
     name: string,
-    boardId: any,
+    boardId: string,
     _id: string,
     created_at: Date,
     status: string,

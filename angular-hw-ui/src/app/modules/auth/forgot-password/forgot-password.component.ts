@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 import { Subject, takeUntil } from 'rxjs';
+
+import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -9,6 +10,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class ForgotPasswordComponent implements OnDestroy {
   logOut: boolean = false;
+  numberOfBoards: boolean = false;
 
   email = '';
   password = '';

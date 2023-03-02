@@ -17,6 +17,7 @@ import { TasksService } from 'src/app/core/services/board-service/tasks.service'
 })
 export class BoardComponent implements OnInit, OnDestroy {
   logOut: boolean = true;
+  numberOfBoards: boolean = true;
   
   private routeSub!: Subscription;
   public boardId: string = '';

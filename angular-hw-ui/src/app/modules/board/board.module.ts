@@ -3,8 +3,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { AppRoutingModule} from 'src/app/app-routing.module';
 
+import { BoardRoutingModule } from './board-routing.module';
 import { BoardComponent } from './board.component';
 import { SharedModule } from '../../modules/shared/shared.module';
 
@@ -14,11 +14,11 @@ import { SharedModule } from '../../modules/shared/shared.module';
   ],
   imports: [
     CommonModule,
-    SharedModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    AppRoutingModule,
-    DragDropModule
+    DragDropModule,
+    BoardRoutingModule,
+    SharedModule
   ]
 })
 export class BoardModule { }

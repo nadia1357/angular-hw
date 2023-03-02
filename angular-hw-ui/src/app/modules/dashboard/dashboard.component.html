@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header [logOut]="logOut" [numberOfBoards]="numberOfBoards"></app-header>
 
 <div class="upper">
     <div>
@@ -13,7 +13,7 @@
     <div class="add-board">
         <button (click)="addNewBoard()">
             <p class="plus">+</p>
-            <p class="text">Add new</p>
+            <p class="text">Add new board</p>
         </button>
     </div>
 

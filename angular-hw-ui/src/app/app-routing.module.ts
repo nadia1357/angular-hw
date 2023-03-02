@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'password/new', component: ForgotPasswordComponent },
 
   { path: '', component: SignInComponent },
-  
+
   {
     path: 'task/:id',
     loadChildren: () => import('./modules/task/task.module')
@@ -32,7 +32,6 @@ const routes: Routes = [
   },
 
   { path: '**', component: PageNotFoundComponent },
-
 ];
 
 @NgModule({
