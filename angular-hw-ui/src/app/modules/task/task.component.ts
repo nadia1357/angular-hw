@@ -6,7 +6,7 @@ import { faTrashCan, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 import { Task } from 'src/app/models/task';
 import { SelectParams, colors } from 'src/app/models/paramArrays';
-import { TasksService } from 'src/app/core/services/board-service/tasks.service';
+import { TasksService } from 'src/app/core/services/task-service/tasks.service';
 
 @Component({
   selector: 'app-task',

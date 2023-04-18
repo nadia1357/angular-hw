@@ -7,8 +7,8 @@ import { faTrashCan, faComment, faPenToSquare, faBoxArchive } from '@fortawesome
 
 import { Task } from 'src/app/models/task';
 import { SelectParams, colors } from 'src/app/models/paramArrays';
-import { BoardsService } from 'src/app/core/services/dashboard-service/boards.service';
-import { TasksService } from 'src/app/core/services/board-service/tasks.service';
+import { BoardsService } from 'src/app/core/services/board-service/boards.service';
+import { TasksService } from 'src/app/core/services/task-service/tasks.service';
 
 @Component({
   selector: 'app-board',
@@ -18,7 +18,7 @@ import { TasksService } from 'src/app/core/services/board-service/tasks.service'
 export class BoardComponent implements OnInit, OnDestroy {
   logOut: boolean = true;
   numberOfBoards: boolean = true;
-  
+
   private routeSub!: Subscription;
   public boardId: string = '';
 
@@ -112,6 +112,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+      this.changeTaskStatus(event.container.data[event.currentIndex], event.container.id);            
     }
   }
 
@@ -181,7 +182,6 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   onEdit(): void {
     let newTask: Partial<Task> = { name: this.editTaskForm?.value.name };
-    console.log(newTask);
     this.tasksService.editTask(this.taskId, newTask)
       .pipe(
         takeUntil(this.destroy$)
@@ -238,6 +238,17 @@ export class BoardComponent implements OnInit, OnDestroy {
         error: () => alert('The task wasn`t archived. Please try again')
       });
     this.showArchivedTasks = true;
+  }
+
+  changeTaskStatus(task: Task, newStatus: string): void {
+    let newTask: Partial<Task> = { status: newStatus };
+    this.tasksService.editTask(task._id, newTask)
+      .pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: () => this.refreshTasks(),
+        error: () => alert('The task status wasn`t changed. Please try again')
+      });
   }
 
   hideArchivedTasks(): void {

@@ -8,7 +8,7 @@ import { StateService } from 'src/app/core/services/state-service/state.service'
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   @Input() numberOfBoards = true;
   @Input() logOut = true;
 

@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+
 import { sortParams, orderParams, SelectParams } from 'src/app/models/paramArrays';
 
 @Component({

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 import { Board } from 'src/app/models/board';
 import { SelectParams } from 'src/app/models/paramArrays';
-import { BoardsService } from 'src/app/core/services/dashboard-service/boards.service';
+import { BoardsService } from 'src/app/core/services/board-service/boards.service';
 import { StateService } from 'src/app/core/services/state-service/state.service';
 import { ValidateDescription } from 'src/app/core/custom_validators/custom_validator';
 
@@ -14,7 +14,7 @@ import { ValidateDescription } from 'src/app/core/custom_validators/custom_valid
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   logOut: boolean = true;
   numberOfBoards: boolean = true;
 

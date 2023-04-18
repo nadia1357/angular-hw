@@ -51,9 +51,8 @@ export class AuthService {
     }>(this._REGISTER_URL, { email, password })
       .pipe(
         tap(({ jwt_token: token }) => {
-          console.log(token);
           this.setUserTokenToStorage(token);
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['/dashboard']);
         })
       );
   }
@@ -64,9 +63,8 @@ export class AuthService {
     }>(this._FORGOT_PASSWORD_URL, { email, password })
       .pipe(
         tap(({ jwt_token: token }) => {
-          console.log(token);
           this.setUserTokenToStorage(token);
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['/dashboard']);
         })
       );
   }

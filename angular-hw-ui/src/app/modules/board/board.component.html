@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="columnBlock item-List" cdkDropList #todoList="cdkDropList" [cdkDropListData]="todoTasks" [cdkDropListConnectedTo]="[inProgressList, doneList]"
+        <div class="columnBlock" id="todo" cdkDropList #todoList="cdkDropList" [cdkDropListData]="todoTasks" [cdkDropListConnectedTo]="[inProgressList, doneList]"
          (cdkDropListDropped)="drop($event)" [ngClass]="getColorValue('todo') || todoCurrentColor">
             <div class="add-task taskItem">
                 <button class="addTaskBtn" (click)="addNewTask('todo')">
@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <div class="columnBlock item-list" cdkDropList #inProgressList="cdkDropList" [cdkDropListData]="inProgressTasks" [cdkDropListConnectedTo]="[todoList, doneList]"
+        <div class="columnBlock" id="inProgress" cdkDropList #inProgressList="cdkDropList" [cdkDropListData]="inProgressTasks" [cdkDropListConnectedTo]="[todoList, doneList]"
          (cdkDropListDropped)="drop($event)"[ngClass]="getColorValue('inProgress') || inProgressCurrentColor">
             <div class="add-task taskItem">
                 <button class="addTaskBtn" (click)="addNewTask('inProgress')">
@@ -128,7 +128,7 @@
             </div>
         </div>
 
-        <div class="columnBlock item-list" cdkDropList #doneList="cdkDropList" [cdkDropListData]="doneTasks" [cdkDropListConnectedTo]="[todoList, inProgressList]"
+        <div class="columnBlock" id="done" cdkDropList #doneList="cdkDropList" [cdkDropListData]="doneTasks" [cdkDropListConnectedTo]="[todoList, inProgressList]"
          (cdkDropListDropped)="drop($event)" [ngClass]="getColorValue('done') || doneCurrentColor">
             <div class="add-task taskItem">
                 <button class="addTaskBtn" (click)="addNewTask('done')">
@@ -180,7 +180,8 @@
             </div>
         </div>
 
-        <div class="columnBlock" [ngClass]="getColorValue('archived') || archivedCurrentColor">
+        <div class="columnBlock" id="archived" cdkDropList #archivedList="cdkDropList" [cdkDropListData]="archivedTasks" [cdkDropListConnectedTo]="[todoList, inProgressList, doneList]"
+         (cdkDropListDropped)="drop($event)"[ngClass]="getColorValue('archived') || archivedCurrentColor">
             <div class="add-task taskItem">
                 <button class="addTaskBtn" (click)="addNewTask('archived')">
                     <p class="plus">+</p>
@@ -194,7 +195,7 @@
                 </form>
             </div>
 
-            <div class="taskItem task" *ngFor="let archivedTask of (archivedTasks)">
+            <div class="taskItem task" *ngFor="let archivedTask of (archivedTasks)" cdkDrag>
                 <h4>{{ archivedTask.name }}</h4>
                 <div class="taskIcons">
                     <fa-icon [icon]="faPenToSquare" (click)="editTask(archivedTask, 'archived')"></fa-icon>
