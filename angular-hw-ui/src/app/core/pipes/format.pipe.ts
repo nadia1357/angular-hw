@@ -4,10 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'format'
 })
 export class FormatPipe implements PipeTransform {
-
   transform(value: string): string {
     const result: string = ':( ' + value + ' ):';
     return result;
   }
-
 }

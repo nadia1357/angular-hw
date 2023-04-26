@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth-service/auth.service';
 describe('SignInComponent', () => {
   let component: SignInComponent;
   let fixture: ComponentFixture<SignInComponent>;
+  let authService: AuthService;
   
   let jwt_token = 'someToken';
 
@@ -24,6 +25,7 @@ describe('SignInComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(SignInComponent);
+    authService = TestBed.inject(AuthService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

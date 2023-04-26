@@ -135,7 +135,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.refreshBoards();
   }
 
-  private refreshBoards(): any {
+  refreshBoards(): any {
     this.boardsService.getBoards(this.selectedParams)
       .pipe(
         takeUntil(this.destroy$)

@@ -260,7 +260,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.refreshTasks();
   }
 
-  private refreshTasks(): any {
+  refreshTasks(): any {
     this.tasksService.getTasks(this.selectedParams, this.boardId)
       .pipe(
         takeUntil(this.destroy$)

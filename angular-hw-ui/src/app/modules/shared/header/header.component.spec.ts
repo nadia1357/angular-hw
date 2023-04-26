@@ -47,13 +47,13 @@ describe('HeaderComponent', () => {
     expect(component.currentBoardsCount).toBe(1);
     expect(component.numberOfBoards).toBe(true);
     expect(component.logOut).toBe(true);
-  })
+  });
 
   it('#OnDestroy, should unsubscribe on destroy', () => {
     component['subscriptionBoardsCounter'] = of(true).subscribe();
     component.ngOnDestroy();
     expect(component['subscriptionBoardsCounter'].closed).toBeTruthy();
-  })
+  });
 
   it('#logout, should set a token in LocalStorage to ``, unsubscribe, set currentBoardsCount to 0', () => {
     component['subscriptionBoardsCounter'] = of(true).subscribe();
@@ -61,5 +61,5 @@ describe('HeaderComponent', () => {
     expect(tokenFromStorage).toBe(token);
     expect(component['subscriptionBoardsCounter'].closed).toBeTruthy();
     expect(component.currentBoardsCount).toBe(0);
-  })
+  });
 });
