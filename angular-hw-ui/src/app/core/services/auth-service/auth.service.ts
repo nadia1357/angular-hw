@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -35,12 +35,8 @@ export class AuthService {
     }>(this._LOGIN_URL, { email, password })
       .pipe(
         tap(({ jwt_token: token }) => {
-          if ({ jwt_token: token }) {
-            this.setUserTokenToStorage(token);
-            this.router.navigate(['/dashboard']);
-          } else {
-            alert('You should register');
-          }
+          this.setUserTokenToStorage(token);
+          this.router.navigate(['/dashboard']);
         })
       );
   }

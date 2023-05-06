@@ -16,7 +16,7 @@ import { TasksService } from 'src/app/core/services/task-service/tasks.service';
 export class TaskComponent implements OnInit, OnDestroy {
   logOut: boolean = true;
   numberOfBoards: boolean = true;
-  
+
   private routeSub!: Subscription;
   public taskId: string = '';
   public boardId: string = '';
@@ -24,13 +24,13 @@ export class TaskComponent implements OnInit, OnDestroy {
   faTrashCan = faTrashCan;
   faPenToSquare = faPenToSquare;
 
-  public title = 'comment';
+  title = 'comment';
   tasks: Task[] = [];
   task: any;
   comments: string[] = [];
   colors: string[] = colors;
-  private colorNumber: number = 0;
-  public currentCommentColor: string = 'red-violet-crayola';
+  colorNumber: number = 0;
+  currentCommentColor: string = 'red-violet-crayola';
 
   oldComment: string = '';
   selectedParams: SelectParams = { name: '', sort: 'Date', order: 'ASC' };
@@ -102,7 +102,7 @@ export class TaskComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => this.refreshComments(),
-        error: () => alert('The comment wasn`t created. Please try again')
+        error: (err) => console.log(err)
       });
 
     this.addCommentForm?.reset();
@@ -122,7 +122,7 @@ export class TaskComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => this.refreshComments(),
-        error: () => alert('The comment wasn`t changed. Please try again')
+        error: (err) => console.log(err)
       });
 
     this.editCommentForm?.reset();
@@ -143,7 +143,7 @@ export class TaskComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => this.refreshComments(),
-        error: () => alert('The comment wasn`t deleted. Please try again')
+        error: (err) => console.log(err)
       });
   }
 
@@ -151,7 +151,7 @@ export class TaskComponent implements OnInit, OnDestroy {
     this.selectedParams = selectedParams;
   }
 
-  private refreshComments() {
+  refreshComments() {
     this.tasksService.getTaskById(this.selectedParams, this.taskId)
       .pipe(
         takeUntil(this.destroy$)

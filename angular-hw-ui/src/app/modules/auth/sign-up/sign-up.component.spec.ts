@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 
 import { SignUpComponent } from './sign-up.component';
 import { AuthService } from 'src/app/core/services/auth-service/auth.service';
+import { HeaderStubComponent, FooterStubComponent } from 'src/app/stubs/stubs';
 
 describe('SignUpComponent', () => {
   let component: SignUpComponent;
@@ -16,7 +17,7 @@ describe('SignUpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SignUpComponent ],
+      declarations: [ SignUpComponent, HeaderStubComponent, FooterStubComponent ],
       providers: [
         { provide: AuthService, useValue: authServiceStub }
       ]
@@ -30,21 +31,21 @@ describe('SignUpComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  })
+  });
 
   it('numberOfBoards and logOut should be false', () => {
     expect(component.numberOfBoards).toBe(false);
     expect(component.logOut).toBe(false);
-  })
+  });
 
   it('#ngOnDestroy, should unsubscribe on destroy', () => {
     component.ngOnDestroy();
     expect(component['destroy$'].complete).toBeTruthy();
-  })
+  });
 
   it('#onSubmitRegister, should register the User, and unsubscribe', () => {
     component.onSubmitRegister();
     expect(jwt_token).toBe('someToken');
     expect(component['destroy$'].complete).toBeTruthy(); 
-  })
+  });
 });

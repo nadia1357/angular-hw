@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
 
 import { AuthService } from './auth.service';
 import { usersMock, newUserMock } from 'src/app/mocks/users-mock';
@@ -9,8 +9,6 @@ describe('AuthService', () => {
   let service: AuthService;
   let httpClientSpy: jasmine.SpyObj<HttpClient>;
   let routerSpy: jasmine.SpyObj<Router>;
-
-  const jwt_token = 'someToken';
 
   beforeEach(() => {
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['post', 'put']);
@@ -31,7 +29,7 @@ describe('AuthService', () => {
         expect(tokenFromStorage).toBe(token);
       }
     });
-  })
+  });
 
   describe('#getUserTokenFromStorage', () => {
     it('should return the user`s token from localstorage if token !== null', () => {
@@ -48,11 +46,11 @@ describe('AuthService', () => {
       const tokenFromStorage: string | null = service.getUserTokenFromStorage();
       expect(tokenFromStorage).toBeNull();
     });
-  })
+  });
 
   describe('#loginUser', () => {
     it('#loginUser should send user`s email and password correctly', (done: DoneFn) => {
-      httpClientSpy.post.and.returnValue(of({jwt_token: usersMock[0].token}));
+      httpClientSpy.post.and.returnValue(of({ jwt_token: usersMock[0].token }));
 
       service.loginUser(usersMock[0].email, usersMock[0].password)
         .subscribe({
@@ -65,7 +63,7 @@ describe('AuthService', () => {
     });
 
     it('#loginUser should place user`s token to local storage', (done: DoneFn) => {
-      httpClientSpy.post.and.returnValue(of({jwt_token: usersMock[0].token}));
+      httpClientSpy.post.and.returnValue(of({ jwt_token: usersMock[0].token }));
 
       service.loginUser(usersMock[0].email, usersMock[0].password)
         .subscribe({
@@ -78,101 +76,117 @@ describe('AuthService', () => {
         });
     });
 
-    it('#loginUser should navigate to the dashboard page', (done: DoneFn) => {
-      httpClientSpy.post.and.returnValue(of({jwt_token: usersMock[0].token}));
+    it('#loginUser should get an error if response has error', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: { code: `some code`, message: `some message.` },
+        status: 400,
+        statusText: 'Bad Request',
+      });
+      httpClientSpy.post.and.returnValue(throwError(() => errorResponse));
+      //expect(() => { service.loginUser('new_email@.com', 'new_password') }).toThrowError('error');
 
-      service.loginUser(usersMock[0].email, usersMock[0].password)
+      service.loginUser('new_email@.com', 'new_password')
         .subscribe({
-          next: () => {
-            expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
-            done();
-          },
-          error: done.fail
-        });
-    });
-  })
+          next: () => fail,
+          error: (err) => expect(err.message).toContain('400')
+      });
+  });
 
-  describe('#registerUser', () => {
-    it('#registerUser should send new user`s email and password correctly', (done: DoneFn) => {
-      httpClientSpy.post.and.returnValue(of({jwt_token: newUserMock.token}));
+  it('#loginUser should navigate to the dashboard page', (done: DoneFn) => {
+    httpClientSpy.post.and.returnValue(of({ jwt_token: usersMock[0].token }));
 
-      service.registerUser(newUserMock.email, newUserMock.password)
-        .subscribe({
-          next: token => {
-            expect(token).toBeTruthy();
-            done();
-          },
-          error: done.fail
-        });
-    });
+    service.loginUser(usersMock[0].email, usersMock[0].password)
+      .subscribe({
+        next: () => {
+          expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
+          done();
+        },
+        error: done.fail
+      });
+  });
+});
 
-    it('#registerUser should place user`s token to local storage', (done: DoneFn) => {
-      httpClientSpy.post.and.returnValue(of({jwt_token: newUserMock.token}));
+describe('#registerUser', () => {
+  it('#registerUser should send new user`s email and password correctly', (done: DoneFn) => {
+    httpClientSpy.post.and.returnValue(of({ jwt_token: newUserMock.token }));
 
-      service.registerUser(newUserMock.email, newUserMock.password)
-        .subscribe({
-          next: () => {
-            const localStorageItem = localStorage.getItem('token');
-            expect(localStorageItem).not.toBeNull();
-            done();
-          },
-          error: done.fail
-        });
-    });
+    service.registerUser(newUserMock.email, newUserMock.password)
+      .subscribe({
+        next: token => {
+          expect(token).toBeTruthy();
+          done();
+        },
+        error: done.fail
+      });
+  });
 
-    it('#registerUser should navigate to the dashboard page', (done: DoneFn) => {
-      httpClientSpy.post.and.returnValue(of({jwt_token: newUserMock.token}));
+  it('#registerUser should place user`s token to local storage', (done: DoneFn) => {
+    httpClientSpy.post.and.returnValue(of({ jwt_token: newUserMock.token }));
 
-      service.registerUser(newUserMock.email, newUserMock.password)
-        .subscribe({
-          next: () => {
-            expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
-            done();
-          },
-          error: done.fail
-        });
-    });
-  })
+    service.registerUser(newUserMock.email, newUserMock.password)
+      .subscribe({
+        next: () => {
+          const localStorageItem = localStorage.getItem('token');
+          expect(localStorageItem).not.toBeNull();
+          done();
+        },
+        error: done.fail
+      });
+  });
 
-  describe('#changePassword', () => {
-    it('#changePassword should send user`s email and new password correctly', (done: DoneFn) => {
-      httpClientSpy.put.and.returnValue(of({jwt_token: 'new_token'}));
+  it('#registerUser should navigate to the dashboard page', (done: DoneFn) => {
+    httpClientSpy.post.and.returnValue(of({ jwt_token: newUserMock.token }));
 
-      service.changePassword(usersMock[1].email, 'new_password')
-        .subscribe({
-          next: token => {
-            expect(token).toBeTruthy();
-            done();
-          },
-          error: done.fail
-        });
-    });
+    service.registerUser(newUserMock.email, newUserMock.password)
+      .subscribe({
+        next: () => {
+          expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
+          done();
+        },
+        error: done.fail
+      });
+  });
+});
 
-    it('#changePassword should place user`s token to local storage', (done: DoneFn) => {
-      httpClientSpy.put.and.returnValue(of({jwt_token: 'new_token'}));
+describe('#changePassword', () => {
+  it('#changePassword should send user`s email and new password correctly', (done: DoneFn) => {
+    httpClientSpy.put.and.returnValue(of({ jwt_token: 'new_token' }));
 
-      service.changePassword(usersMock[1].email, 'new_password')
-        .subscribe({
-          next: () => {
-            const localStorageItem = localStorage.getItem('token');
-            expect(localStorageItem).not.toBeNull();
-            done();
-          },
-          error: done.fail
-        });
-    });
+    service.changePassword(usersMock[1].email, 'new_password')
+      .subscribe({
+        next: token => {
+          expect(token).toBeTruthy();
+          done();
+        },
+        error: done.fail
+      });
+  });
 
-    it('#changePassword should navigate to the dashboard page', (done: DoneFn) => {
-      httpClientSpy.put.and.returnValue(of({jwt_token: 'new_token'}));
+  it('#changePassword should place user`s token to local storage', (done: DoneFn) => {
+    httpClientSpy.put.and.returnValue(of({ jwt_token: 'new_token' }));
 
-      service.changePassword(usersMock[1].email, 'new_password')
-        .subscribe({
-          next: () => {
-            expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
-            done();
-          },
-          error: done.fail
-        });
-    });
-  })
-})
+    service.changePassword(usersMock[1].email, 'new_password')
+      .subscribe({
+        next: () => {
+          const localStorageItem = localStorage.getItem('token');
+          expect(localStorageItem).not.toBeNull();
+          done();
+        },
+        error: done.fail
+      });
+  });
+
+  it('#changePassword should navigate to the dashboard page', (done: DoneFn) => {
+    httpClientSpy.put.and.returnValue(of({ jwt_token: 'new_token' }));
+
+    service.changePassword(usersMock[1].email, 'new_password')
+      .subscribe({
+        next: () => {
+          expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
+          done();
+        },
+        error: done.fail
+      });
+  });
+});
+});

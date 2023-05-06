@@ -1,8 +1,8 @@
 import { FormatPipe } from './format.pipe';
 
 describe('FormatPipe', () => {
-  it('create an instance', () => {
-    const pipe = new FormatPipe();
-    expect(pipe).toBeTruthy();
+  const pipe = new FormatPipe();
+  it('transforms `abc` to `:( abc ):`', () => {
+    expect(pipe.transform('abc')).toBe(':( abc ):');
   });
 });

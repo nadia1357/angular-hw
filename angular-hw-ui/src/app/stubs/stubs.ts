@@ -12,9 +12,7 @@ export class FormatPipeStub implements PipeTransform {
   selector: '[highlight]',
   exportAs: 'highlight'
 })
-export class HighlightDirectiveStub {
-    private highlight(color: string) {}
-}
+export class HighlightDirectiveStub { }
 
 @Component({
   selector: 'app-footer',

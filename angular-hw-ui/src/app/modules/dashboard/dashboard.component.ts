@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => this.refreshBoards(),
-        error: () => alert('This board wasn`t created. Please try again')
+        error: (err) => console.log(err) 
       });
 
     this.addBoardForm?.reset();
@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => this.refreshBoards(),
-        error: () => alert('The board name wasn`t changed. Please try again')
+        error: (err) => console.log(err)
       });
 
     this.editBoardForm?.reset();
@@ -122,7 +122,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => this.refreshBoards(),
-        error: () => alert('The board wasn`t deleted. Please try again')
+        error: (err) => console.log(err)
       });
   }
 

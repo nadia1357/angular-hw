@@ -35,12 +35,12 @@ export class BoardComponent implements OnInit, OnDestroy {
   archivedTasks: Task[] = [];
   colors: string[] = colors;
 
-  private colorNumber: number = 0;
-  public currentColumn: string = '';
-  public todoCurrentColor: string = 'red-violet-crayola';
-  public inProgressCurrentColor: string = 'pastel-pink';
-  public doneCurrentColor: string = 'magic-mint';
-  public archivedCurrentColor: string = 'wild-orchid';
+  colorNumber: number = 0;
+  currentColumn: string = '';
+  todoCurrentColor: string = 'red-violet-crayola';
+  inProgressCurrentColor: string = 'pastel-pink';
+  doneCurrentColor: string = 'magic-mint';
+  archivedCurrentColor: string = 'wild-orchid';
 
   taskId: string = '';
   taskToComment: string = '';
@@ -153,7 +153,7 @@ export class BoardComponent implements OnInit, OnDestroy {
           this.numberOfTasks = this.tasks.length;
           this.boardsService.updateNumberOfTasks(this.boardId, this.numberOfTasks);
         },
-        error: () => alert('This task wasn`t created. Please try again')
+        error: (err) => console.log(err)
       });
 
     this.addTaskForm?.reset();
@@ -187,7 +187,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => this.refreshTasks(),
-        error: () => alert('The task name wasn`t changed. Please try again')
+        error: (err) => console.log(err)
       });
 
     this.editTaskForm?.reset();
@@ -225,7 +225,7 @@ export class BoardComponent implements OnInit, OnDestroy {
           this.numberOfTasks = this.tasks.length;
           this.boardsService.updateNumberOfTasks(this.boardId, this.numberOfTasks);
         },
-        error: () => alert('The task wasn`t deleted. Please try again')
+        error: (err) => console.log(err)
       });
   }
 
@@ -235,7 +235,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => this.refreshTasks(),
-        error: () => alert('The task wasn`t archived. Please try again')
+        error: (err) => console.log(err)
       });
     this.showArchivedTasks = true;
   }
@@ -247,7 +247,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe({
         next: () => this.refreshTasks(),
-        error: () => alert('The task status wasn`t changed. Please try again')
+        error: (err) => console.log(err)
       });
   }
 
